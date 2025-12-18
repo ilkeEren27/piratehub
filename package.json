@@ -31,7 +31,7 @@
     "date-fns": "^4.1.0",
     "lucide-react": "^0.542.0",
     "nanoid": "^5.1.5",
-    "next": "15.5.2",
+    "next": "^15.5.9",
     "pixi-viewport": "^6.0.3",
     "pixi.js": "^8.13.1",
     "postcss": "^8.5.6",

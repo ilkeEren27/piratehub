@@ -16,178 +16,14 @@ import { useSearchParams } from "next/navigation";
 const MAP_CENTER = { lat: 47.7531493070487, lng: -117.41635063409184 };
 const DEFAULT_ZOOM = 17;
 
-// Light mode map styles matching warm palette (#e7d7c1 background, #2d1b1a text)
-const lightMapStyles = [
-  { elementType: "geometry", stylers: [{ color: "#f5ede4" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#2d1b1a" }] },
-  {
-    featureType: "administrative.locality",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#2d1b1a" }],
-  },
+// Map styling rules (kept minimal): hide building/POI labels without changing base map colors.
+const MAP_LABEL_HIDE_STYLES = [
   {
     featureType: "poi",
-    elementType: "labels.icon",
+    elementType: "labels",
     stylers: [{ visibility: "off" }],
   },
-  {
-    featureType: "poi",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#5a4a45" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "geometry",
-    stylers: [{ color: "#e7d7c1" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#735751" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#ffffff" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#c4b5a8" }],
-  },
-  {
-    featureType: "road",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#2d1b1a" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry",
-    stylers: [{ color: "#f5ede4" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#a78a7f" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#2d1b1a" }],
-  },
-  {
-    featureType: "transit",
-    elementType: "geometry",
-    stylers: [{ color: "#e7d7c1" }],
-  },
-  {
-    featureType: "transit.station",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#5a4a45" }],
-  },
-  {
-    featureType: "water",
-    elementType: "geometry",
-    stylers: [{ color: "#d4a574" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#735751" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#f5ede4" }],
-  },
-];
-
-// Dark mode map styles matching warm palette (#2d1b1a background, #e7d7c1 text)
-const darkMapStyles = [
-  { elementType: "geometry", stylers: [{ color: "#2d1b1a" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#2d1b1a" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#e7d7c1" }] },
-  {
-    featureType: "administrative.locality",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#e7d7c1" }],
-  },
-  {
-    featureType: "poi",
-    elementType: "labels.icon",
-    stylers: [{ visibility: "off" }],
-  },
-  {
-    featureType: "poi",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#c4b5a8" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "geometry",
-    stylers: [{ color: "#3a2826" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#a78a7f" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#3a2826" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#5a4a45" }],
-  },
-  {
-    featureType: "road",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#e7d7c1" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry",
-    stylers: [{ color: "#5a4a45" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#735751" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#e7d7c1" }],
-  },
-  {
-    featureType: "transit",
-    elementType: "geometry",
-    stylers: [{ color: "#3a2826" }],
-  },
-  {
-    featureType: "transit.station",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#c4b5a8" }],
-  },
-  {
-    featureType: "water",
-    elementType: "geometry",
-    stylers: [{ color: "#1a1413" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#8a6f64" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#2d1b1a" }],
-  },
+  { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
 ];
 
 export default function CampusMap() {
@@ -289,17 +125,10 @@ export default function CampusMap() {
       clickableIcons: false,
       gestureHandling: "greedy",
       fullscreenControl: false,
-      styles: isDarkMode ? darkMapStyles : lightMapStyles,
+      styles: MAP_LABEL_HIDE_STYLES,
     }),
-    [isDarkMode]
+    []
   );
-
-  // Update map styles when dark mode changes
-  useEffect(() => {
-    if (mapInstance) {
-      mapInstance.setOptions({ styles: isDarkMode ? darkMapStyles : lightMapStyles });
-    }
-  }, [isDarkMode, mapInstance]);
 
   return (
     <div className="w-full h-[calc(100dvh-72px)] grid grid-rows-[auto_auto_1fr] sm:rounded-xl overflow-hidden bg-background sm:shadow-lg">
@@ -339,7 +168,9 @@ export default function CampusMap() {
 
       {/* ANY / ALL logic toggle */}
       <div className="px-2 sm:px-3 py-2 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-        <span className="text-xs sm:text-sm text-muted-foreground">Filter logic:</span>
+        <span className="text-xs sm:text-sm text-muted-foreground">
+          Filter logic:
+        </span>
         <div className="flex gap-2">
           <Button
             onClick={() => setLogic("ANY")}
@@ -403,7 +234,15 @@ export default function CampusMap() {
                     {p.categories.map((c) => (
                       <span
                         key={c}
-                        className="rounded-md p-1 text-xs border border-border bg-card text-card-foreground dark:border-border dark:bg-card dark:text-card-foreground"
+                        className="rounded-md p-1 text-xs border border-border bg-card font-medium"
+                        style={
+                          colors?.[c]
+                            ? {
+                                borderColor: colors[c],
+                                color: colors[c],
+                              }
+                            : undefined
+                        }
                       >
                         {c}
                       </span>

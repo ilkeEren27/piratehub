@@ -55,6 +55,11 @@ export default async function NavigationBar() {
               Events
             </Button>
           </Link>
+          <Link href="/campus-guide">
+            <Button className="w-28 h-9" variant="ghost">
+              Guide
+            </Button>
+          </Link>
           <Link href="/social">
             <Button className="w-20 h-9" variant="ghost">
               Social
@@ -122,6 +127,9 @@ export default async function NavigationBar() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/events">Events</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/campus-guide">Campus Guide</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/social">Social</Link>

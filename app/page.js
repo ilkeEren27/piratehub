@@ -10,7 +10,7 @@ export default function Home() {
 
         <div className="relative z-10 flex flex-col items-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in">
-            Hello, Whitworth!
+            Welcome to PirateHub!
           </h1>
           <p className="mt-4 text-lg md:text-xl py-10 max-w-2xl text-center text-foreground/90 leading-relaxed">
             I&apos;ve started building this campus-life app for Whitworth

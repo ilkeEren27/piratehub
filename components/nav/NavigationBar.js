@@ -39,7 +39,7 @@ export default async function NavigationBar() {
           />
           <Link href="/" className="transition-opacity duration-200 hover:opacity-80">
             <h1 className="font-semibold text-2xl whitespace-nowrap bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Whitworth Life
+              PirateHub
             </h1>
           </Link>
         </div>
@@ -140,7 +140,7 @@ export default async function NavigationBar() {
         </div>
         <div className="flex gap-2 items-center">
           <Link href="/" className="transition-opacity duration-200 hover:opacity-80">
-            <h1 className="font-semibold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Whitworth Life</h1>
+            <h1 className="font-semibold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PirateHub</h1>
           </Link>
           <Image
             alt="Whitworth Logo"

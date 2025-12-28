@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Whitworth Life",
-  description: "Social Media Platform for Whitworth Students and Faculty",
+  title: "PirateHub",
+  description: "Campus Hub for Whitworth Pirates",
 };
 
 export default function RootLayout({ children }) {

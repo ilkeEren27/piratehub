@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import {
   GoogleMap,
   MarkerF,
@@ -43,6 +43,42 @@ export default function CampusMap() {
     const id = searchParams?.get("id");
     if (id) setActiveId(id);
   }, [searchParams]);
+
+  // Search functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
+
+  // Filter places based on search query
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return places.filter((place) =>
+      place.name.toLowerCase().includes(query)
+    ).slice(0, 8); // Limit to 8 results
+  }, [searchQuery]);
+
+  // Handle clicking on a search result
+  const handleSelectPlace = useCallback((place) => {
+    setActiveId(place.id);
+    setSearchQuery("");
+    setShowResults(false);
+    if (mapInstance) {
+      mapInstance.panTo({ lat: place.lat, lng: place.lng });
+      mapInstance.setZoom(18); // Zoom in on the selected location
+    }
+  }, [mapInstance]);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Detect dark mode and listen for changes
   useEffect(() => {
@@ -131,7 +167,72 @@ export default function CampusMap() {
   );
 
   return (
-    <div className="w-full h-[calc(100dvh-72px)] grid grid-rows-[auto_auto_1fr] sm:rounded-xl overflow-hidden bg-background sm:shadow-lg">
+    <div className="w-full h-[calc(100dvh-72px)] grid grid-rows-[auto_auto_auto_1fr] sm:rounded-xl overflow-hidden bg-background sm:shadow-lg">
+      {/* Search bar */}
+      <div className="p-2 sm:p-3 relative" ref={searchRef}>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search for a location..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setShowResults(true);
+            }}
+            onFocus={() => setShowResults(true)}
+            className="w-full px-4 py-2.5 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+          />
+          {/* Search icon */}
+          <svg
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+        {/* Search results dropdown */}
+        {showResults && searchResults.length > 0 && (
+          <div className="absolute left-2 right-2 sm:left-3 sm:right-3 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden">
+            {searchResults.map((place) => (
+              <button
+                key={place.id}
+                onClick={() => handleSelectPlace(place)}
+                className="w-full px-4 py-3 text-left hover:bg-accent transition-colors flex items-center justify-between gap-2"
+              >
+                <span className="font-medium text-foreground">{place.name}</span>
+                <div className="flex gap-1.5 flex-wrap justify-end">
+                  {place.categories.slice(0, 2).map((cat) => (
+                    <span
+                      key={cat}
+                      className="text-xs px-2 py-0.5 rounded-full border"
+                      style={{
+                        borderColor: colors[cat] || "var(--border)",
+                        color: colors[cat] || "var(--foreground)",
+                      }}
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+        {/* No results message */}
+        {showResults && searchQuery.trim() && searchResults.length === 0 && (
+          <div className="absolute left-2 right-2 sm:left-3 sm:right-3 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-50 px-4 py-3 text-muted-foreground text-sm">
+            No locations found for "{searchQuery}"
+          </div>
+        )}
+      </div>
+
       {/* Filter chips */}
       <div className="p-2 sm:p-3 flex gap-2 flex-wrap backdrop-blur">
         {categories.map((c) => {

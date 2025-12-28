@@ -26,7 +26,7 @@ export const places = [
     categories: ["Food & Drink", "Study", "Faculty"],
     lat: 47.752615496195396,
     lng: -117.41534005971103,
-    desc: "Will work on description",
+    desc: "Heart of Whitworth, HUB is a place where students can come to relax, study, and socialize.",
   },
   {
     id: "library",
@@ -34,7 +34,7 @@ export const places = [
     categories: ["Study", "Faculty"],
     lat: 47.75331746629829,
     lng: -117.41693334406533,
-    desc: "Will work on description",
+    desc: "Whitworth's Library, you can find all the books you need here, find some quiet spot to study, or just relax and read a book. Also you can use colored printers or computers here.",
   },
   {
     id: "loop",
@@ -51,7 +51,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75271828635754,
     lng: -117.4232606228953,
-    desc: "Will work on description",
+    desc: "Soccer Field of Whitworth, usually used for soccer games and practices.",
   },
   {
     id: "omache",
@@ -59,7 +59,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.751776937453336,
     lng: -117.42261152834939,
-    desc: "Will work on description",
+    desc: "Omache Field, second soccer field of Whitworth, usually used for soccer games and practices.",
   },
   {
     id: "marks",
@@ -67,7 +67,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.752606479524424,
     lng: -117.42218773934836,
-    desc: "Will work on description",
+    desc: "Marks Field, usually used for softball/baseball games and practices.",
   },
   {
     id: "pinebowl",
@@ -75,7 +75,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75245139222919,
     lng: -117.42090027909205,
-    desc: "Will work on description",
+    desc: "Pine Bowl, football field of Whitworth, usually used for football games and practices.",
   },
   {
     id: "athleticscenter",
@@ -99,7 +99,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.755041981444,
     lng: -117.4220084935376,
-    desc: "Will work on description",
+    desc: "Fieldhouse, usually used for basketball and volleyball games/practices.",
   },
   {
     id: "aquatics",
@@ -107,7 +107,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75516820291176,
     lng: -117.42098195922182,
-    desc: "Will work on description",
+    desc: "Aquatics Center, usually used for swimming and diving games/practices.",
   },
   {
     id: "tennis",
@@ -115,7 +115,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75576868142948,
     lng: -117.42097391261163,
-    desc: "Will work on description",
+    desc: "Tennis Bubble, usually used for tennis games/practices.",
   },
   {
     id: "urec",
@@ -123,7 +123,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.755721797469384,
     lng: -117.41918756145421,
-    desc: "Will work on description",
+    desc: "U-Rec, main gym of Whitworth, has 3 fields used for basketball, volleyball, and other games/practices and also has bunch of gym equipment for students to use.",
   },
   // Residence Halls
   {
@@ -132,7 +132,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.753893170936216,
     lng: -117.41972351160906,
-    desc: "Will work on description",
+    desc: "McMillan Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "ballard",
@@ -140,7 +140,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75339275462088,
     lng: -117.41993071224408,
-    desc: "Will work on description",
+    desc: "Ballard Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "chapel",
@@ -148,7 +148,7 @@ export const places = [
     categories: ["Faculty"],
     lat: 47.75317004527094,
     lng: -117.41937884775146,
-    desc: "Will work on description",
+    desc: "Chapel, usually used for worship and socializing.",
   },
   {
     id: "warren",
@@ -156,7 +156,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75255015085784,
     lng: -117.41882363048825,
-    desc: "Will work on description",
+    desc: "Warren Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "arend",
@@ -164,7 +164,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75323171610508,
     lng: -117.41531552076555,
-    desc: "Will work on description",
+    desc: "Arend Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "baldwinjenkins",
@@ -172,7 +172,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75465992302573,
     lng: -117.41492123601897,
-    desc: "Will work on description",
+    desc: "Baldwin Jenkins Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "stewart",
@@ -180,7 +180,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75404861199142,
     lng: -117.41450549364453,
-    desc: "Will work on description",
+    desc: "Stewart Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "village",
@@ -188,7 +188,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.754265907739345,
     lng: -117.41385237578532,
-    desc: "Will work on description",
+    desc: "Village, usually used for residence and socializing.",
   },
   {
     id: "oliver",
@@ -196,7 +196,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75444082565129,
     lng: -117.41284386521771,
-    desc: "Will work on description",
+    desc: "Oliver Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "duvall",
@@ -204,7 +204,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75373141712407,
     lng: -117.4124116653769,
-    desc: "Will work on description",
+    desc: "Duvall Residence Hall, usually used for residence and socializing.",
   },
   {
     id: "boppell",
@@ -212,7 +212,7 @@ export const places = [
     categories: ["Residence"],
     lat: 47.75300828920256,
     lng: -117.41306880657213,
-    desc: "Will work on description",
+    desc: "Boppell Residence Hall, usually used for residence and socializing.",
   },
   // Faculty
   {

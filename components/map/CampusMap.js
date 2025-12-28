@@ -228,7 +228,7 @@ export default function CampusMap() {
         {/* No results message */}
         {showResults && searchQuery.trim() && searchResults.length === 0 && (
           <div className="absolute left-2 right-2 sm:left-3 sm:right-3 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-50 px-4 py-3 text-muted-foreground text-sm">
-            No locations found for "{searchQuery}"
+            No locations found for &ldquo;{searchQuery}&rdquo;
           </div>
         )}
       </div>

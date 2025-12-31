@@ -17,27 +17,35 @@ const isPublicRoute = createRouteMatcher([
   "/:locale/forgot-password(.*)",
   "/:locale/reset-password(.*)",
   "/:locale/verify-email(.*)",
-  "/api/webhooks/clerk", // <-- allow Clerk webhook
-  "/api/webhooks/(.*)", // <-- (optional) any other webhooks you add
+  "/api/(.*)", // All API routes are public (auth handled per-route if needed)
   "/:locale",
   "/",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Run next-intl middleware first for locale handling
-  const intlResponse = intlMiddleware(req);
+  // Skip intl middleware for API routes - they should not go through locale handling
+  const isApiRoute = req.nextUrl.pathname.startsWith('/api');
   
+  if (!isApiRoute) {
+    // Run next-intl middleware only for non-API routes
+    const intlResponse = intlMiddleware(req);
+    
+    if (!isPublicRoute(req)) {
+      await auth.protect();
+    }
+    
+    return intlResponse;
+  }
+  
+  // For API routes, just check authentication if needed
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
-  
-  return intlResponse;
 });
 
 export const config = {
   matcher: [
-    // Run middleware for everything except static files and _next
-    "/((?!_next|sign-in|sign-up|forgot-password|reset-password|verify-email|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
+    // Run middleware for everything except static files, _next, and API routes
+    "/((?!api|_next|sign-in|sign-up|forgot-password|reset-password|verify-email|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
   ],
 };

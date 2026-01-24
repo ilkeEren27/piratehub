@@ -18,7 +18,7 @@ export default function CampusGuidePage() {
   
   return (
     <main className="animate-fade-in">
-      <section className="flex flex-col items-center justify-center my-20 md:my-40 px-4 relative">
+      <section className="flex flex-col items-center justify-center my-12 md:my-16 px-4 relative">
         {/* Subtle background decoration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>

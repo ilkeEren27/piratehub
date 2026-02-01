@@ -169,6 +169,10 @@
         "name": "Dornsife Health Sciences Building",
         "desc": "Health sciences academic building."
       },
+      "paccar": {
+        "name": "PACCAR Engineering Building",
+        "desc": "Engineering building with study spaces."
+      },
       "weyerhaeuser": {
         "name": "Weyerhaeuser Hall",
         "desc": "Academic building with study spaces."

@@ -272,6 +272,14 @@ export const places = [
     desc: "Will work on description",
   },
   {
+    id: "paccar",
+    name: "PACCAR Engineering Building",
+    categories: ["Faculty", "Study"],
+    lat: 47.754867079045454, 
+    lng: -117.41592512450856,
+    desc: "Will work on description",
+  },
+  {
     id: "weyerhaeuser",
     name: "Weyerhaeuser Hall",
     categories: ["Faculty", "Study"],

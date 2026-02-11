@@ -7,7 +7,7 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
 
 ## Features
 
-- **Interactive Campus Map** 🗺
+- **Interactive Campus Map**
 
   - Explore Whitworth’s campus with custom markers and icons.
   - Click on events to instantly highlight their location.

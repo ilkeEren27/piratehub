@@ -1,38 +1,38 @@
-# Whitworth Campus App 📍🎉
+# Whitworth Campus App
 
 A modern full-stack web app built for Whitworth University students.
-It brings together events, clubs, maps, and a social hub — all in one clean interface.
+It brings together events, clubs, maps, and a social hub, all in one clean interface.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Interactive Campus Map** 🗺
 
   - Explore Whitworth’s campus with custom markers and icons.
   - Click on events to instantly highlight their location.
-- **Events System** 🎉
+- **Events System**
 
   - Create, edit, and browse campus events.
   - Event markers link directly to map locations.
   - Clean event cards with time, location, and optional images.
-- **Authentication & Roles** 🔐
+- **Authentication & Roles**
 
   - Secure sign-in/sign-up with [Clerk](https://clerk.com).
   - Roles: `Admin`, `Moderator`, `Faculty`, `ASWU`, `ClubLeader`, `User`.
   - Admin dashboard with user management tools.
-- **Social Hub (in progress)** 💬
+- **Social Hub (in progress)**
 
   - A forum-style space for students to discuss classes, clubs, and campus life.
   - Likes, replies, tags, and moderation planned.
-- **Modern UI** 🎨
+- **Modern UI**
 
   - Built with [TailwindCSS](https://tailwindcss.com) + [Shadcn UI](https://ui.shadcn.com).
   - Clean, responsive design with dark/light support.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org)
 - **UI**: TailwindCSS + Shadcn UI
@@ -42,7 +42,7 @@ It brings together events, clubs, maps, and a social hub — all in one clean in
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 ├── app/

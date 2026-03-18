@@ -3,6 +3,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { customAlphabet } from "nanoid";
+import { checkBlocklist, checkOpenAIModeration } from "@/lib/moderation";
 
 import slugify from "slugify";
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 8);
@@ -36,6 +37,18 @@ export async function upsertEventAction(formData) {
   const appUser = await prisma.user.findUnique({ where: { clerkId: userId } });
   if (!appUser) throw new Error("App user not found");
 
+  // Content moderation
+  const textToCheck = [title, description].filter(Boolean).join(" ");
+
+  if (checkBlocklist(textToCheck)) {
+    throw new Error(
+      "Your event contains inappropriate language and cannot be submitted."
+    );
+  }
+
+  const { flagged } = await checkOpenAIModeration(textToCheck);
+  const moderationStatus = flagged ? "Pending" : "Approved";
+
   if (id) {
     return prisma.event.update({
       where: { id: Number(id) },
@@ -48,6 +61,7 @@ export async function upsertEventAction(formData) {
         startsAt,
         endsAt,
         allDay,
+        moderationStatus,
       },
     });
   } else {
@@ -67,7 +81,30 @@ export async function upsertEventAction(formData) {
         allDay,
         organizerId: appUser.id,
         published: true,
+        moderationStatus,
       },
     });
   }
+}
+
+export async function moderateEventAction(formData) {
+  const user = await currentUser();
+  if (!user) throw new Error("Not signed in");
+
+  const role = user.publicMetadata?.role;
+  if (role !== "Admin" && role !== "Moderator") {
+    throw new Error("Not authorized");
+  }
+
+  const id = Number(formData.get("id"));
+  const status = formData.get("status"); // "Approved" | "Rejected"
+
+  if (!["Approved", "Rejected"].includes(status)) {
+    throw new Error("Invalid status");
+  }
+
+  return prisma.event.update({
+    where: { id },
+    data: { moderationStatus: status },
+  });
 }

@@ -16,6 +16,12 @@ enum Role {
   Admin
 }
 
+enum ModerationStatus {
+  Pending
+  Approved
+  Rejected
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
@@ -89,13 +95,16 @@ model Event {
   endsAt      DateTime
   allDay      Boolean   @default(false)
 
-  organizer   User?     @relation("UserEvents", fields: [organizerId], references: [id], onDelete: SetNull)
-  organizerId Int?
+  organizer        User?            @relation("UserEvents", fields: [organizerId], references: [id], onDelete: SetNull)
+  organizerId      Int?
+
+  moderationStatus ModerationStatus @default(Approved)
 
   attachments Attachment[]
 
   @@index([startsAt])
   @@index([published])
+  @@index([moderationStatus])
 }
 
 model Attachment {

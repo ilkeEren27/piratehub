@@ -390,7 +390,7 @@ export default function EventForm({ initialEvent }) {
 
         {/* Footer Hint */}
         <p className="text-center text-sm text-muted-foreground mt-6">
-          Your event will be visible to all users after creation
+          Your event will be reviewed before it becomes visible to all users
         </p>
       </div>
     </main>

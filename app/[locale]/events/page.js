@@ -69,6 +69,20 @@ export default async function EventsPage({ params }) {
   const role = user?.publicMetadata?.role ?? "User";
   const allowedRoles = new Set(["ClubLeader", "ASWU", "Faculty", "Admin"]);
   const canCreate = allowedRoles.has(role);
+  const isModerator = role === "Admin" || role === "Moderator";
+
+  let appUserId = null;
+  if (user) {
+    try {
+      const appUser = await prisma.user.findUnique({
+        where: { clerkId: user.id },
+        select: { id: true },
+      });
+      appUserId = appUser?.id ?? null;
+    } catch (error) {
+      console.error("Error resolving app user:", error);
+    }
+  }
 
   let events = [];
   try {
@@ -84,6 +98,7 @@ export default async function EventsPage({ params }) {
 
   const transformedEvents = events.map((event) => ({
     id: event.id,
+    slug: event.slug,
     title: event.title,
     description: event.description || "",
     image: event.imageUrl || "/whitworth.png",
@@ -92,6 +107,8 @@ export default async function EventsPage({ params }) {
     date: formatEventDate(event.startsAt, event.endsAt, event.allDay, locale),
     organizer: event.organizer?.name || "Unknown",
     organizerRole: event.organizer?.role ?? "Unknown",
+    canEdit:
+      isModerator || (appUserId !== null && event.organizerId === appUserId),
   }));
 
   return (

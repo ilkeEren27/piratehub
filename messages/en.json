@@ -216,7 +216,8 @@
     "noEvents": "No events scheduled. Create the first event!",
     "showLocation": "Show Location",
     "hostedIn": "Event will be hosted in",
-    "postedBy": "Posted by"
+    "postedBy": "Posted by",
+    "edit": "Edit"
   },
   "campusGuide": {
     "title": "Campus Guide",
@@ -279,5 +280,64 @@
   },
   "language": {
     "switchTo": "Español"
+  },
+  "admin": {
+    "profilePicture": "Profile Picture",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "setRole": "Set Role",
+    "moderationQueue": "Moderation Queue",
+    "roles": {
+      "User": "User",
+      "ClubLeader": "Club Leader",
+      "ASWU": "ASWU",
+      "Moderator": "Moderator",
+      "Faculty": "Faculty",
+      "Admin": "Admin"
+    }
+  },
+  "moderation": {
+    "title": "Event Moderation Queue",
+    "noEvents": "No events pending review.",
+    "by": "By",
+    "at": "at",
+    "approve": "Approve",
+    "reject": "Reject",
+    "unknownOrganizer": "Unknown"
+  },
+  "eventForm": {
+    "editTitle": "Edit Event",
+    "createTitle": "Create an Event",
+    "editDescription": "Fill in the details below to update your event",
+    "createDescription": "Fill in the details below to create a new event",
+    "titleLabel": "Event Title",
+    "titlePlaceholder": "Give your event a catchy title...",
+    "locationLabel": "Location",
+    "allDayLabel": "All Day Event",
+    "allDayHint": "Enable if your event spans the entire day",
+    "dateAndTime": "Date & Time",
+    "starts": "Starts",
+    "ends": "Ends",
+    "date": "Date",
+    "time": "Time",
+    "selectDate": "Select date",
+    "descriptionLabel": "Description",
+    "optional": "(optional)",
+    "descriptionPlaceholder": "Tell people what your event is about...",
+    "saveChanges": "Save Changes",
+    "createButton": "Create Event",
+    "reviewNotice": "Your event will be reviewed before it becomes visible to all users",
+    "errors": {
+      "invalidDates": "Please select valid start and end date and time",
+      "endBeforeStart": "End date can't be earlier than start date",
+      "pastStart": "Start date/time can't be in the past",
+      "creating": "Error creating event:"
+    }
+  },
+  "notFound": {
+    "title": "This page doesn’t exist 💀",
+    "subtitle": "Oops, you took a wrong turn. This page is totally lost 🚧",
+    "home": "Take me home"
   }
 }

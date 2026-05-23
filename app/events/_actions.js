@@ -50,6 +50,19 @@ export async function upsertEventAction(formData) {
   const moderationStatus = flagged ? "Pending" : "Approved";
 
   if (id) {
+    const existing = await prisma.event.findUnique({
+      where: { id: Number(id) },
+      select: { organizerId: true },
+    });
+    if (!existing) throw new Error("Event not found");
+
+    const isOwner = existing.organizerId === appUser.id;
+    const isModerator =
+      appUser.role === "Admin" || appUser.role === "Moderator";
+    if (!isOwner && !isModerator) {
+      throw new Error("You do not have permission to edit this event");
+    }
+
     return prisma.event.update({
       where: { id: Number(id) },
       data: {

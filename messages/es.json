@@ -169,6 +169,10 @@
         "name": "Edificio de Ciencias de la Salud Dornsife",
         "desc": "Edificio académico de ciencias de la salud."
       },
+      "paccar": {
+        "name": "Edificio de Ingeniería PACCAR",
+        "desc": "Edificio de ingeniería con espacios de estudio."
+      },
       "weyerhaeuser": {
         "name": "Edificio Weyerhaeuser",
         "desc": "Edificio académico con espacios de estudio."
@@ -212,7 +216,8 @@
     "noEvents": "No hay eventos programados. ¡Crea el primer evento!",
     "showLocation": "Mostrar Ubicación",
     "hostedIn": "El evento se realizará en",
-    "postedBy": "Publicado por"
+    "postedBy": "Publicado por",
+    "edit": "Editar"
   },
   "campusGuide": {
     "title": "Guía del Campus",
@@ -275,5 +280,64 @@
   },
   "language": {
     "switchTo": "English"
+  },
+  "admin": {
+    "profilePicture": "Foto de Perfil",
+    "name": "Nombre",
+    "email": "Correo",
+    "role": "Rol",
+    "setRole": "Asignar Rol",
+    "moderationQueue": "Cola de Moderación",
+    "roles": {
+      "User": "Usuario",
+      "ClubLeader": "Líder de Club",
+      "ASWU": "ASWU",
+      "Moderator": "Moderador",
+      "Faculty": "Facultad",
+      "Admin": "Administrador"
+    }
+  },
+  "moderation": {
+    "title": "Cola de Moderación de Eventos",
+    "noEvents": "No hay eventos pendientes de revisión.",
+    "by": "Por",
+    "at": "en",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "unknownOrganizer": "Desconocido"
+  },
+  "eventForm": {
+    "editTitle": "Editar Evento",
+    "createTitle": "Crear un Evento",
+    "editDescription": "Completa los detalles a continuación para actualizar tu evento",
+    "createDescription": "Completa los detalles a continuación para crear un nuevo evento",
+    "titleLabel": "Título del Evento",
+    "titlePlaceholder": "Dale a tu evento un título llamativo...",
+    "locationLabel": "Ubicación",
+    "allDayLabel": "Evento de Todo el Día",
+    "allDayHint": "Activa si tu evento dura todo el día",
+    "dateAndTime": "Fecha y Hora",
+    "starts": "Comienza",
+    "ends": "Termina",
+    "date": "Fecha",
+    "time": "Hora",
+    "selectDate": "Seleccionar fecha",
+    "descriptionLabel": "Descripción",
+    "optional": "(opcional)",
+    "descriptionPlaceholder": "Cuéntanos de qué trata tu evento...",
+    "saveChanges": "Guardar Cambios",
+    "createButton": "Crear Evento",
+    "reviewNotice": "Tu evento será revisado antes de ser visible para todos los usuarios",
+    "errors": {
+      "invalidDates": "Por favor selecciona fechas y horas de inicio y fin válidas",
+      "endBeforeStart": "La fecha de fin no puede ser anterior a la fecha de inicio",
+      "pastStart": "La fecha/hora de inicio no puede ser en el pasado",
+      "creating": "Error al crear el evento:"
+    }
+  },
+  "notFound": {
+    "title": "Esta página no existe 💀",
+    "subtitle": "Ups, tomaste un giro equivocado. Esta página está totalmente perdida 🚧",
+    "home": "Llévame al inicio"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { places } from "@/data/places";
 import { upsertEventAction } from "@/app/events/_actions";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,8 @@ import {
 } from "lucide-react";
 
 export default function EventForm({ initialEvent }) {
+  const t = useTranslations("eventForm");
+
   const [detailsJson, setDetailsJson] = useState(
     initialEvent?.detailsJson ?? { type: "doc", content: [] }
   );
@@ -92,17 +95,17 @@ export default function EventForm({ initialEvent }) {
       Number.isNaN(start.getTime()) ||
       Number.isNaN(end.getTime())
     ) {
-      alert("Please select valid start and end date and time");
+      alert(t("errors.invalidDates"));
       return;
     }
     if (start > end) {
-      alert("End date can't be earlier than start date");
+      alert(t("errors.endBeforeStart"));
       return;
     }
     // New: prevent creating events in the past (start must be in the future)
     const now = new Date();
     if (!isEditing && start < now) {
-      alert("Start date/time can't be in the past");
+      alert(t("errors.pastStart"));
       return;
     }
     try {
@@ -114,7 +117,7 @@ export default function EventForm({ initialEvent }) {
       window.location.href = "/events";
     } catch (error) {
       console.error("Event creation error:", error);
-      alert(`Error creating event: ${error.message}`);
+      alert(`${t("errors.creating")} ${error.message}`);
     }
   }
 
@@ -127,10 +130,10 @@ export default function EventForm({ initialEvent }) {
             <Sparkles className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            {initialEvent ? "Edit Event" : "Create an Event"}
+            {initialEvent ? t("editTitle") : t("createTitle")}
           </h1>
           <p className="text-muted-foreground">
-            Fill in the details below to {initialEvent ? "update your" : "create a new"} event
+            {initialEvent ? t("editDescription") : t("createDescription")}
           </p>
         </div>
 
@@ -141,7 +144,7 @@ export default function EventForm({ initialEvent }) {
             <div className="space-y-2">
               <Label htmlFor="title" className="flex items-center gap-2 text-sm font-medium">
                 <Type className="w-4 h-4 text-primary" />
-                Event Title
+                {t("titleLabel")}
               </Label>
               <input
                 id="title"
@@ -149,7 +152,7 @@ export default function EventForm({ initialEvent }) {
                 defaultValue={initialEvent?.title ?? ""}
                 required
                 className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 placeholder:text-muted-foreground/60"
-                placeholder="Give your event a catchy title..."
+                placeholder={t("titlePlaceholder")}
               />
             </div>
 
@@ -157,7 +160,7 @@ export default function EventForm({ initialEvent }) {
             <div className="space-y-2">
               <Label htmlFor="location" className="flex items-center gap-2 text-sm font-medium">
                 <MapPinIcon className="w-4 h-4 text-primary" />
-                Location
+                {t("locationLabel")}
               </Label>
               <div className="relative">
                 <select
@@ -188,8 +191,8 @@ export default function EventForm({ initialEvent }) {
                 <div className="w-11 h-6 bg-muted peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
               <div>
-                <span className="font-medium text-foreground">All Day Event</span>
-                <p className="text-sm text-muted-foreground">Enable if your event spans the entire day</p>
+                <span className="font-medium text-foreground">{t("allDayLabel")}</span>
+                <p className="text-sm text-muted-foreground">{t("allDayHint")}</p>
               </div>
             </div>
 
@@ -197,7 +200,7 @@ export default function EventForm({ initialEvent }) {
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <CalendarLucide className="w-4 h-4 text-primary" />
-                Date & Time
+                {t("dateAndTime")}
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
@@ -205,13 +208,13 @@ export default function EventForm({ initialEvent }) {
                 <div className="p-4 bg-muted/20 rounded-xl border border-border/50 space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="font-medium text-sm">Starts</span>
+                    <span className="font-medium text-sm">{t("starts")}</span>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="space-y-1.5">
                       <Label htmlFor="start-date-picker" className="text-xs text-muted-foreground">
-                        Date
+                        {t("date")}
                       </Label>
                       <Popover open={openStart} onOpenChange={setOpenStart}>
                         <PopoverTrigger asChild>
@@ -224,12 +227,12 @@ export default function EventForm({ initialEvent }) {
                             <span className="flex items-center gap-2">
                               <CalendarIcon className="w-4 h-4 text-muted-foreground" />
                               {startDate
-                                ? startDate.toLocaleDateString("en-US", { 
-                                    month: "short", 
+                                ? startDate.toLocaleDateString(undefined, {
+                                    month: "short",
                                     day: "numeric",
                                     year: "numeric"
                                   })
-                                : "Select date"}
+                                : t("selectDate")}
                             </span>
                             <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
                           </Button>
@@ -256,7 +259,7 @@ export default function EventForm({ initialEvent }) {
                     
                     <div className="space-y-1.5">
                       <Label htmlFor="start-time-picker" className="text-xs text-muted-foreground">
-                        Time
+                        {t("time")}
                       </Label>
                       <div className="relative">
                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -283,13 +286,13 @@ export default function EventForm({ initialEvent }) {
                 <div className="p-4 bg-muted/20 rounded-xl border border-border/50 space-y-4">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                    <span className="font-medium text-sm">Ends</span>
+                    <span className="font-medium text-sm">{t("ends")}</span>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="space-y-1.5">
                       <Label htmlFor="end-date-picker" className="text-xs text-muted-foreground">
-                        Date
+                        {t("date")}
                       </Label>
                       <Popover open={openEnd} onOpenChange={setOpenEnd}>
                         <PopoverTrigger asChild>
@@ -302,12 +305,12 @@ export default function EventForm({ initialEvent }) {
                             <span className="flex items-center gap-2">
                               <CalendarIcon className="w-4 h-4 text-muted-foreground" />
                               {endDate
-                                ? endDate.toLocaleDateString("en-US", { 
-                                    month: "short", 
+                                ? endDate.toLocaleDateString(undefined, {
+                                    month: "short",
                                     day: "numeric",
                                     year: "numeric"
                                   })
-                                : "Select date"}
+                                : t("selectDate")}
                             </span>
                             <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
                           </Button>
@@ -334,7 +337,7 @@ export default function EventForm({ initialEvent }) {
                     
                     <div className="space-y-1.5">
                       <Label htmlFor="end-time-picker" className="text-xs text-muted-foreground">
-                        Time
+                        {t("time")}
                       </Label>
                       <div className="relative">
                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -363,8 +366,8 @@ export default function EventForm({ initialEvent }) {
             <div className="space-y-2">
               <Label htmlFor="description" className="flex items-center gap-2 text-sm font-medium">
                 <FileText className="w-4 h-4 text-primary" />
-                Description
-                <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+                {t("descriptionLabel")}
+                <span className="text-xs text-muted-foreground font-normal">{t("optional")}</span>
               </Label>
               <textarea
                 id="description"
@@ -372,17 +375,17 @@ export default function EventForm({ initialEvent }) {
                 defaultValue={initialEvent?.description ?? ""}
                 rows={4}
                 className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 placeholder:text-muted-foreground/60 resize-none"
-                placeholder="Tell people what your event is about..."
+                placeholder={t("descriptionPlaceholder")}
               />
             </div>
 
             {/* Submit Button */}
             <div className="pt-4">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full py-6 text-lg font-semibold rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:shadow-primary/25"
               >
-                {initialEvent ? "Save Changes" : "Create Event"}
+                {initialEvent ? t("saveChanges") : t("createButton")}
               </Button>
             </div>
           </form>
@@ -390,7 +393,7 @@ export default function EventForm({ initialEvent }) {
 
         {/* Footer Hint */}
         <p className="text-center text-sm text-muted-foreground mt-6">
-          Your event will be reviewed before it becomes visible to all users
+          {t("reviewNotice")}
         </p>
       </div>
     </main>

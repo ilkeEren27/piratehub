@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { checkRole } from "@/utils/roles";
 import { SearchUsers } from "@/components/admin/SearchUsers";
 import { clerkClient } from "@clerk/nextjs/server";
@@ -11,12 +12,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { setRequestLocale } from "next-intl/server";
+import { Gavel } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+
+const ROLE_VALUES = ["User", "ClubLeader", "ASWU", "Moderator", "Faculty", "Admin"];
 
 export default async function AdminDashboard({ searchParams, params }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  
+  const t = await getTranslations("admin");
+
   // Guard: only admins
   if (!(await checkRole("Admin"))) {
     redirect(`/${locale}`);
@@ -33,6 +38,14 @@ export default async function AdminDashboard({ searchParams, params }) {
 
   return (
     <main>
+      <div className="flex justify-end my-4 mx-4">
+        <Link href={`/${locale}/admin/moderation`}>
+          <Button>
+            <Gavel className="w-4 h-4" />
+            {t("moderationQueue")}
+          </Button>
+        </Link>
+      </div>
       <SearchUsers />
 
       {users.map((user) => {
@@ -40,6 +53,11 @@ export default async function AdminDashboard({ searchParams, params }) {
           user.emailAddresses.find(
             (email) => email.id === user.primaryEmailAddressId
           )?.emailAddress || "";
+
+        const currentRole = user.publicMetadata?.role ?? "User";
+        const roleLabel = t.has(`roles.${currentRole}`)
+          ? t(`roles.${currentRole}`)
+          : currentRole;
 
         return (
           <div key={user.id}>
@@ -49,23 +67,23 @@ export default async function AdminDashboard({ searchParams, params }) {
               <div className="flex my-4 mx-4 gap-4 min-w-0">
                 <Image
                   src={user.imageUrl}
-                  alt="Profile Picture"
+                  alt={t("profilePicture")}
                   width={75}
                   height={75}
                   className="rounded-md object-cover"
                 />
                 <div className="min-w-0 align-center">
                   <h1>
-                    <span className="font-medium truncate">Name: </span>
+                    <span className="font-medium truncate">{t("name")}: </span>
                     {user.firstName} {user.lastName}
                   </h1>
                   <div>
-                    <span className="font-medium truncate">Email: </span>
+                    <span className="font-medium truncate">{t("email")}: </span>
                     {primaryEmail}
                   </div>
                   <div>
-                    <span className="font-medium truncate">Role: </span>
-                    {user.publicMetadata?.role ?? "User"}
+                    <span className="font-medium truncate">{t("role")}: </span>
+                    {roleLabel}
                   </div>
                 </div>
               </div>
@@ -75,64 +93,21 @@ export default async function AdminDashboard({ searchParams, params }) {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="w-40 h-8">
-                      Set Role
+                      {t("setRole")}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="User" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          User
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="ClubLeader" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Club Leader
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="ASWU" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          ASWU
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Moderator" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Moderator
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Faculty" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Faculty
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Admin" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Admin
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
+                    {ROLE_VALUES.map((roleValue) => (
+                      <form key={roleValue} action={setRole}>
+                        <input type="hidden" value={user.id} name="id" />
+                        <input type="hidden" value={roleValue} name="role" />
+                        <DropdownMenuItem asChild>
+                          <button type="submit" className="w-full text-left">
+                            {t(`roles.${roleValue}`)}
+                          </button>
+                        </DropdownMenuItem>
+                      </form>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -142,23 +117,23 @@ export default async function AdminDashboard({ searchParams, params }) {
               <div className="flex my-4 mx-4 gap-4 min-w-0">
                 <Image
                   src={user.imageUrl}
-                  alt="Profile Picture"
+                  alt={t("profilePicture")}
                   width={75}
                   height={75}
                   className="rounded-md object-cover"
                 />
                 <div className="min-w-0 align-center">
                   <h1>
-                    <span className="font-medium truncate">Name: </span>
+                    <span className="font-medium truncate">{t("name")}: </span>
                     {user.firstName} {user.lastName}
                   </h1>
                   <div>
-                    <span className="font-medium truncate">Email: </span>
+                    <span className="font-medium truncate">{t("email")}: </span>
                     {primaryEmail}
                   </div>
                   <div>
-                    <span className="font-medium truncate">Role: </span>
-                    {user.publicMetadata?.role ?? "User"}
+                    <span className="font-medium truncate">{t("role")}: </span>
+                    {roleLabel}
                   </div>
                 </div>
               </div>
@@ -168,64 +143,21 @@ export default async function AdminDashboard({ searchParams, params }) {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="w-88 h-8">
-                      Set Role
+                      {t("setRole")}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="User" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          User
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="ClubLeader" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Club Leader
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="ASWU" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          ASWU
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Moderator" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Moderator
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Faculty" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Faculty
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
-                    <form action={setRole}>
-                      <input type="hidden" value={user.id} name="id" />
-                      <input type="hidden" value="Admin" name="role" />
-                      <DropdownMenuItem asChild>
-                        <button type="submit" className="w-full text-left">
-                          Admin
-                        </button>
-                      </DropdownMenuItem>
-                    </form>
+                    {ROLE_VALUES.map((roleValue) => (
+                      <form key={roleValue} action={setRole}>
+                        <input type="hidden" value={user.id} name="id" />
+                        <input type="hidden" value={roleValue} name="role" />
+                        <DropdownMenuItem asChild>
+                          <button type="submit" className="w-full text-left">
+                            {t(`roles.${roleValue}`)}
+                          </button>
+                        </DropdownMenuItem>
+                      </form>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

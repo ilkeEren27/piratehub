@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,7 @@ import Link from "next/link";
 
 // Get event details and render them in a card component
 export default function EventCard({
+  slug,
   title,
   description,
   image,
@@ -26,10 +28,11 @@ export default function EventCard({
   date,
   organizer,
   organizerRole,
+  canEdit = false,
   locale = "en",
 }) {
   const t = useTranslations("events");
-  
+
   return (
     <Card className="animate-fade-in">
       <CardHeader>
@@ -38,9 +41,19 @@ export default function EventCard({
         </CardTitle>
         <CardDescription className="text-base">{description}</CardDescription>
         <CardAction>
-          <Link href={`/${locale}/map?id=${locationId}`}>
-            <Button>{t("showLocation")}</Button>
-          </Link>
+          <div className="flex flex-wrap gap-2 justify-end">
+            {canEdit && slug && (
+              <Link href={`/${locale}/events/editor/${slug}`}>
+                <Button variant="outline">
+                  <Pencil className="w-4 h-4" />
+                  {t("edit")}
+                </Button>
+              </Link>
+            )}
+            <Link href={`/${locale}/map?id=${locationId}`}>
+              <Button>{t("showLocation")}</Button>
+            </Link>
+          </div>
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-4">

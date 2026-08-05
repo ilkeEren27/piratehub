@@ -2,7 +2,7 @@
 // The actual layout is in app/[locale]/layout.js
 export const metadata = {
   title: "PirateHub",
-  description: "Campus Hub for Whitworth Pirates",
+  description: "Campus Hub for Pirates",
 };
 
 export default function RootLayout({ children }) {

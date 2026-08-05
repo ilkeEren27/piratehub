@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "PirateHub",
-    "description": "Campus Hub for Whitworth Pirates"
+    "description": "Campus Hub for Pirates"
   },
   "nav": {
     "map": "Map",
@@ -19,7 +19,7 @@
   },
   "home": {
     "welcome": "Welcome to PirateHub!",
-    "description": "I've started building this campus-life app for Whitworth students with one main goal: create a digital campus community, a platform where students can connect with each other, discover events, and navigate Whitworth with ease."
+    "description": "I've started building this campus-life app for pirates with one main goal: create a digital campus community, a platform where pirates can connect with each other, discover events, and navigate campus with ease."
   },
   "footer": {
     "madeBy": "Made by",
@@ -47,11 +47,11 @@
     "places": {
       "hub": {
         "name": "HUB",
-        "desc": "Heart of Whitworth, HUB is a place where students can come to relax, study, and socialize."
+        "desc": "Heart of campus, HUB is a place where students can come to relax, study, and socialize."
       },
       "library": {
         "name": "Library",
-        "desc": "Whitworth's Library, you can find all the books you need here, find some quiet spot to study, or just relax and read a book. Also you can use colored printers or computers here."
+        "desc": "The campus library, you can find all the books you need here, find some quiet spot to study, or just relax and read a book. Also you can use colored printers or computers here."
       },
       "loop": {
         "name": "Loop",
@@ -59,11 +59,11 @@
       },
       "soccer": {
         "name": "Soccer Field",
-        "desc": "Soccer Field of Whitworth, usually used for soccer games and practices."
+        "desc": "Main soccer field on campus, usually used for soccer games and practices."
       },
       "omache": {
         "name": "Omache Field",
-        "desc": "Omache Field, second soccer field of Whitworth, usually used for soccer games and practices."
+        "desc": "Omache Field, second soccer field on campus, usually used for soccer games and practices."
       },
       "marks": {
         "name": "Marks Field",
@@ -71,7 +71,7 @@
       },
       "pinebowl": {
         "name": "Pine Bowl",
-        "desc": "Pine Bowl, football field of Whitworth, usually used for football games and practices."
+        "desc": "Pine Bowl, home football field of the Pirates, usually used for football games and practices."
       },
       "athleticscenter": {
         "name": "Athletics Center",
@@ -95,7 +95,7 @@
       },
       "urec": {
         "name": "U-Rec",
-        "desc": "U-Rec, main gym of Whitworth, has 3 fields used for basketball, volleyball, and other games/practices and also has bunch of gym equipment for students to use."
+        "desc": "U-Rec, main gym on campus, has 3 fields used for basketball, volleyball, and other games/practices and also has bunch of gym equipment for students to use."
       },
       "mcmillan": {
         "name": "McMillan Residence Hall",
@@ -198,11 +198,11 @@
         "desc": "Academic and administrative building."
       },
       "admissions": {
-        "name": "Whitworth Admissions",
+        "name": "Admissions Office",
         "desc": "Admissions office for prospective students."
       },
       "bookstore": {
-        "name": "Whitworth Bookstore & Pines Cafe",
+        "name": "Campus Bookstore & Pines Cafe",
         "desc": "Campus bookstore and cafe."
       },
       "hawthorne": {
@@ -221,12 +221,12 @@
   },
   "campusGuide": {
     "title": "Campus Guide",
-    "description": "Discover essential locations and resources around Whitworth campus. Find study spaces, dining options, athletic facilities, and more to help you navigate campus life.",
+    "description": "Discover essential locations and resources around campus. Find study spaces, dining options, athletic facilities, and more to help you navigate campus life.",
     "cards": {
       "whatToBring": {
         "title": "What to Bring",
-        "description": "What to Bring to Whitworth",
-        "content": "We're glad you will be a part of our community. Following are lists of items you'll need to bring to Whitworth along with items you may want to bring with you when you arrive on campus. Additionally, please read What's Provided for information about what is already in your room and What Not to Bring, which details items not allowed in the residence halls.",
+        "description": "What to Bring to Campus",
+        "content": "We're glad you will be a part of our community. Following are lists of items you'll need to bring along with items you may want to bring with you when you arrive on campus. Additionally, please read What's Provided for information about what is already in your room and What Not to Bring, which details items not allowed in the residence halls.",
         "buttonText": "Learn More"
       },
       "healthServices": {
@@ -276,7 +276,7 @@
   },
   "social": {
     "title": "Instagram Feed",
-    "description": "Latest posts from Whitworth Instagram accounts"
+    "description": "Latest posts from campus Instagram accounts"
   },
   "language": {
     "switchTo": "Español"

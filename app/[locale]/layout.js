@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
   
   return {
     title: messages.metadata?.title || "PirateHub",
-    description: messages.metadata?.description || "Campus Hub for Whitworth Pirates",
+    description: messages.metadata?.description || "Campus Hub for Pirates",
   };
 }
 

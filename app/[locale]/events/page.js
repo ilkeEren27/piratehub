@@ -90,7 +90,7 @@ export default async function EventsPage({ params }) {
     slug: event.slug,
     title: event.title,
     description: event.description || "",
-    image: event.imageUrl || "/whitworth.png",
+    image: event.imageUrl || "/pirate-icon.png",
     location: getLocationName(event.location),
     locationId: event.location,
     date: formatEventDate(event.startsAt, event.endsAt, event.allDay, locale),

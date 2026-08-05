@@ -60,8 +60,8 @@ export default function NavigationBar() {
         {/* Left: Logo and Title */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <Image
-            alt="Whitworth Logo"
-            src="/whitworth.png"
+            alt="PirateHub Logo"
+            src="/pirate-icon.png"
             width="32"
             height="32"
             className="transition-transform duration-200 hover:scale-110"
@@ -300,8 +300,8 @@ export default function NavigationBar() {
             <h1 className="font-semibold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">PirateHub</h1>
           </Link>
           <Image
-            alt="Whitworth Logo"
-            src="/whitworth.png"
+            alt="PirateHub Logo"
+            src="/pirate-icon.png"
             width="32"
             height="32"
             className="transition-transform duration-200 hover:scale-110"

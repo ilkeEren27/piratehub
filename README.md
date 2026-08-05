@@ -1,6 +1,6 @@
-# Whitworth Campus App
+# PirateHub
 
-A modern full-stack web app built for Whitworth University students.
+A modern full-stack campus app built for pirates.
 It brings together events, clubs, maps, and a social hub, all in one clean interface.
 
 ---
@@ -9,7 +9,7 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
 
 - **Interactive Campus Map**
 
-  - Explore Whitworth’s campus with custom markers and icons.
+  - Explore the campus with custom markers and icons.
   - Click on events to instantly highlight their location.
 - **Events System**
 

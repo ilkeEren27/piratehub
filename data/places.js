@@ -26,7 +26,7 @@ export const places = [
     categories: ["Food & Drink", "Study", "Faculty"],
     lat: 47.752615496195396,
     lng: -117.41534005971103,
-    desc: "Heart of Whitworth, HUB is a place where students can come to relax, study, and socialize.",
+    desc: "Heart of campus, HUB is a place where students can come to relax, study, and socialize.",
   },
   {
     id: "library",
@@ -34,7 +34,7 @@ export const places = [
     categories: ["Study", "Faculty"],
     lat: 47.75331746629829,
     lng: -117.41693334406533,
-    desc: "Whitworth's Library, you can find all the books you need here, find some quiet spot to study, or just relax and read a book. Also you can use colored printers or computers here.",
+    desc: "The campus library, you can find all the books you need here, find some quiet spot to study, or just relax and read a book. Also you can use colored printers or computers here.",
   },
   {
     id: "loop",
@@ -51,7 +51,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75271828635754,
     lng: -117.4232606228953,
-    desc: "Soccer Field of Whitworth, usually used for soccer games and practices.",
+    desc: "Main soccer field on campus, usually used for soccer games and practices.",
   },
   {
     id: "omache",
@@ -59,7 +59,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.751776937453336,
     lng: -117.42261152834939,
-    desc: "Omache Field, second soccer field of Whitworth, usually used for soccer games and practices.",
+    desc: "Omache Field, second soccer field on campus, usually used for soccer games and practices.",
   },
   {
     id: "marks",
@@ -75,7 +75,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.75245139222919,
     lng: -117.42090027909205,
-    desc: "Pine Bowl, football field of Whitworth, usually used for football games and practices.",
+    desc: "Pine Bowl, home football field of the Pirates, usually used for football games and practices.",
   },
   {
     id: "athleticscenter",
@@ -123,7 +123,7 @@ export const places = [
     categories: ["Athletics"],
     lat: 47.755721797469384,
     lng: -117.41918756145421,
-    desc: "U-Rec, main gym of Whitworth, has 3 fields used for basketball, volleyball, and other games/practices and also has bunch of gym equipment for students to use.",
+    desc: "U-Rec, main gym on campus, has 3 fields used for basketball, volleyball, and other games/practices and also has bunch of gym equipment for students to use.",
   },
   // Residence Halls
   {
@@ -329,7 +329,7 @@ export const places = [
   },
   {
     id: "admissions",
-    name: "Whitworth Admissions",
+    name: "Admissions Office",
     categories: ["Faculty", "Admin"],
     lat: 47.75019768166902,
     lng: -117.41755887297633,
@@ -337,7 +337,7 @@ export const places = [
   },
   {
     id: "bookstore",
-    name: "Whitworth Bookstore & Pines Cafe",
+    name: "Campus Bookstore & Pines Cafe",
     categories: ["Faculty", "Food & Drink", "Study"],
     lat: 47.75142056787491,
     lng: -117.41238966037285,

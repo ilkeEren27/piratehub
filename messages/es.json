@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "PirateHub",
-    "description": "Centro de Campus para Piratas de Whitworth"
+    "description": "Centro de Campus para Piratas"
   },
   "nav": {
     "map": "Mapa",
@@ -19,7 +19,7 @@
   },
   "home": {
     "welcome": "¡Bienvenido a PirateHub!",
-    "description": "He comenzado a construir esta aplicación de vida universitaria para estudiantes de Whitworth con un objetivo principal: crear una comunidad digital del campus, una plataforma donde los estudiantes puedan conectarse entre sí, descubrir eventos y navegar Whitworth con facilidad."
+    "description": "He comenzado a construir esta aplicación de vida universitaria para piratas con un objetivo principal: crear una comunidad digital del campus, una plataforma donde los piratas puedan conectarse entre sí, descubrir eventos y navegar el campus con facilidad."
   },
   "footer": {
     "madeBy": "Hecho por",
@@ -47,11 +47,11 @@
     "places": {
       "hub": {
         "name": "HUB",
-        "desc": "El corazón de Whitworth, el HUB es un lugar donde los estudiantes pueden venir a relajarse, estudiar y socializar."
+        "desc": "El corazón del campus, el HUB es un lugar donde los estudiantes pueden venir a relajarse, estudiar y socializar."
       },
       "library": {
         "name": "Biblioteca",
-        "desc": "La Biblioteca de Whitworth, aquí puedes encontrar todos los libros que necesitas, encontrar un lugar tranquilo para estudiar, o simplemente relajarte y leer un libro. También puedes usar impresoras a color o computadoras aquí."
+        "desc": "La biblioteca del campus, aquí puedes encontrar todos los libros que necesitas, encontrar un lugar tranquilo para estudiar, o simplemente relajarte y leer un libro. También puedes usar impresoras a color o computadoras aquí."
       },
       "loop": {
         "name": "Loop",
@@ -59,11 +59,11 @@
       },
       "soccer": {
         "name": "Campo de Fútbol",
-        "desc": "Campo de Fútbol de Whitworth, generalmente usado para partidos y prácticas de fútbol."
+        "desc": "Campo de fútbol principal del campus, generalmente usado para partidos y prácticas de fútbol."
       },
       "omache": {
         "name": "Campo Omache",
-        "desc": "Campo Omache, segundo campo de fútbol de Whitworth, generalmente usado para partidos y prácticas de fútbol."
+        "desc": "Campo Omache, segundo campo de fútbol del campus, generalmente usado para partidos y prácticas de fútbol."
       },
       "marks": {
         "name": "Campo Marks",
@@ -71,7 +71,7 @@
       },
       "pinebowl": {
         "name": "Pine Bowl",
-        "desc": "Pine Bowl, campo de fútbol americano de Whitworth, generalmente usado para partidos y prácticas de fútbol americano."
+        "desc": "Pine Bowl, campo de fútbol americano de los Piratas, generalmente usado para partidos y prácticas de fútbol americano."
       },
       "athleticscenter": {
         "name": "Centro de Atletismo",
@@ -95,7 +95,7 @@
       },
       "urec": {
         "name": "U-Rec",
-        "desc": "U-Rec, gimnasio principal de Whitworth, tiene 3 canchas usadas para baloncesto, voleibol y otros juegos/prácticas y también tiene mucho equipo de gimnasio para uso de los estudiantes."
+        "desc": "U-Rec, gimnasio principal del campus, tiene 3 canchas usadas para baloncesto, voleibol y otros juegos/prácticas y también tiene mucho equipo de gimnasio para uso de los estudiantes."
       },
       "mcmillan": {
         "name": "Residencia McMillan",
@@ -198,11 +198,11 @@
         "desc": "Edificio académico y administrativo."
       },
       "admissions": {
-        "name": "Admisiones de Whitworth",
+        "name": "Oficina de Admisiones",
         "desc": "Oficina de admisiones para estudiantes prospectivos."
       },
       "bookstore": {
-        "name": "Librería Whitworth y Pines Cafe",
+        "name": "Librería del Campus y Pines Cafe",
         "desc": "Librería del campus y cafetería."
       },
       "hawthorne": {
@@ -221,12 +221,12 @@
   },
   "campusGuide": {
     "title": "Guía del Campus",
-    "description": "Descubre ubicaciones esenciales y recursos en el campus de Whitworth. Encuentra espacios de estudio, opciones de comida, instalaciones deportivas y más para ayudarte a navegar la vida universitaria.",
+    "description": "Descubre ubicaciones esenciales y recursos en el campus. Encuentra espacios de estudio, opciones de comida, instalaciones deportivas y más para ayudarte a navegar la vida universitaria.",
     "cards": {
       "whatToBring": {
         "title": "Qué Traer",
-        "description": "Qué traer a Whitworth",
-        "content": "Nos alegra que seas parte de nuestra comunidad. A continuación encontrarás listas de artículos que necesitarás traer a Whitworth junto con artículos que podrías querer traer cuando llegues al campus. Además, lee Lo que se Proporciona para información sobre lo que ya está en tu habitación y Qué No Traer, que detalla los artículos no permitidos en las residencias.",
+        "description": "Qué traer al campus",
+        "content": "Nos alegra que seas parte de nuestra comunidad. A continuación encontrarás listas de artículos que necesitarás traer junto con artículos que podrías querer traer cuando llegues al campus. Además, lee Lo que se Proporciona para información sobre lo que ya está en tu habitación y Qué No Traer, que detalla los artículos no permitidos en las residencias.",
         "buttonText": "Más Información"
       },
       "healthServices": {
@@ -276,7 +276,7 @@
   },
   "social": {
     "title": "Feed de Instagram",
-    "description": "Últimas publicaciones de cuentas de Instagram de Whitworth"
+    "description": "Últimas publicaciones de cuentas de Instagram del campus"
   },
   "language": {
     "switchTo": "English"

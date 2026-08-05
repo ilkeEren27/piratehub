@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { checkRole } from "@/utils/roles";
 import { SearchUsers } from "@/components/admin/SearchUsers";
-import { clerkClient } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/db";
 import { setRole } from "./_actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,26 @@ import { Gavel } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const ROLE_VALUES = ["User", "ClubLeader", "ASWU", "Moderator", "Faculty", "Admin"];
+
+function Avatar({ user, alt }) {
+  if (user.image) {
+    return (
+      <Image
+        src={user.image}
+        alt={alt}
+        width={75}
+        height={75}
+        className="rounded-md object-cover"
+      />
+    );
+  }
+  const initial = (user.name || user.email || "?").trim().charAt(0).toUpperCase();
+  return (
+    <div className="w-[75px] h-[75px] shrink-0 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground text-3xl font-semibold">
+      {initial}
+    </div>
+  );
+}
 
 export default async function AdminDashboard({ searchParams, params }) {
   const { locale } = await params;
@@ -31,10 +51,17 @@ export default async function AdminDashboard({ searchParams, params }) {
   const resolvedParams = (await searchParams) || {};
   const query = resolvedParams.search || "";
 
-  const client = await clerkClient();
-  const users = query
-    ? (await client.users.getUserList({ query })).data
-    : (await client.users.getUserList()).data;
+  const users = await prisma.user.findMany({
+    where: query
+      ? {
+          OR: [
+            { name: { contains: query, mode: "insensitive" } },
+            { email: { contains: query, mode: "insensitive" } },
+          ],
+        }
+      : undefined,
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <main>
@@ -49,12 +76,7 @@ export default async function AdminDashboard({ searchParams, params }) {
       <SearchUsers />
 
       {users.map((user) => {
-        const primaryEmail =
-          user.emailAddresses.find(
-            (email) => email.id === user.primaryEmailAddressId
-          )?.emailAddress || "";
-
-        const currentRole = user.publicMetadata?.role ?? "User";
+        const currentRole = user.role ?? "User";
         const roleLabel = t.has(`roles.${currentRole}`)
           ? t(`roles.${currentRole}`)
           : currentRole;
@@ -65,21 +87,15 @@ export default async function AdminDashboard({ searchParams, params }) {
             <div className="hidden md:flex items-start justify-between border-b py-4 gap-6">
               {/* LEFT: avatar + details */}
               <div className="flex my-4 mx-4 gap-4 min-w-0">
-                <Image
-                  src={user.imageUrl}
-                  alt={t("profilePicture")}
-                  width={75}
-                  height={75}
-                  className="rounded-md object-cover"
-                />
+                <Avatar user={user} alt={t("profilePicture")} />
                 <div className="min-w-0 align-center">
                   <h1>
                     <span className="font-medium truncate">{t("name")}: </span>
-                    {user.firstName} {user.lastName}
+                    {user.name}
                   </h1>
                   <div>
                     <span className="font-medium truncate">{t("email")}: </span>
-                    {primaryEmail}
+                    {user.email}
                   </div>
                   <div>
                     <span className="font-medium truncate">{t("role")}: </span>
@@ -115,21 +131,15 @@ export default async function AdminDashboard({ searchParams, params }) {
             {/* Mobile*/}
             <div className="md:hidden">
               <div className="flex my-4 mx-4 gap-4 min-w-0">
-                <Image
-                  src={user.imageUrl}
-                  alt={t("profilePicture")}
-                  width={75}
-                  height={75}
-                  className="rounded-md object-cover"
-                />
+                <Avatar user={user} alt={t("profilePicture")} />
                 <div className="min-w-0 align-center">
                   <h1>
                     <span className="font-medium truncate">{t("name")}: </span>
-                    {user.firstName} {user.lastName}
+                    {user.name}
                   </h1>
                   <div>
                     <span className="font-medium truncate">{t("email")}: </span>
-                    {primaryEmail}
+                    {user.email}
                   </div>
                   <div>
                     <span className="font-medium truncate">{t("role")}: </span>

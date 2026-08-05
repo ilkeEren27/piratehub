@@ -1,51 +1,56 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from "next-intl/middleware";
+import { getSessionCookie } from "better-auth/cookies";
+import { NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 
 // Create next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-// Add all *public* routes here (no auth required)
-// Note: Include locale prefix patterns
-const isPublicRoute = createRouteMatcher([
-  "/:locale/map(.*)",
-  "/:locale/events(.*)", // Allow all events routes including editor
-  "/:locale/campus-guide(.*)", // Campus guide pages
-  "/:locale/social(.*)", // Social/Instagram feed pages
-  "/:locale/log-in(.*)",
-  "/:locale/sign-up(.*)",
-  "/:locale/forgot-password(.*)",
-  "/:locale/reset-password(.*)",
-  "/:locale/verify-email(.*)",
-  "/api/(.*)", // All API routes are public (auth handled per-route if needed)
-  "/:locale",
-  "/",
+// First path segment (after the locale) of all *public* routes (no auth required)
+const PUBLIC_SEGMENTS = new Set([
+  "map",
+  "events", // Allow all events routes including editor
+  "campus-guide", // Campus guide pages
+  "social", // Social/Instagram feed pages
+  "log-in",
+  "sign-up",
+  "forgot-password",
+  "reset-password",
+  "verify-email",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  // Skip intl middleware for API routes - they should not go through locale handling
-  const isApiRoute = req.nextUrl.pathname.startsWith('/api');
-  
-  if (!isApiRoute) {
-    // Run next-intl middleware only for non-API routes
-    const intlResponse = intlMiddleware(req);
-    
-    if (!isPublicRoute(req)) {
-      await auth.protect();
+const localePattern = new RegExp(`^/(${routing.locales.join("|")})(/.*)?$`);
+
+function isPublicRoute(pathname) {
+  // Strip the locale prefix if present, e.g. "/en/map/x" -> "/map/x"
+  const match = pathname.match(localePattern);
+  const path = match ? match[2] || "/" : pathname;
+
+  if (path === "/") return true;
+  const firstSegment = path.split("/")[1];
+  return PUBLIC_SEGMENTS.has(firstSegment);
+}
+
+export default function middleware(req) {
+  const { pathname } = req.nextUrl;
+
+  if (!isPublicRoute(pathname)) {
+    // Optimistic check: only verifies the session cookie exists. Pages and
+    // server actions still validate the session against the DB themselves.
+    const sessionCookie = getSessionCookie(req);
+    if (!sessionCookie) {
+      const localeMatch = pathname.match(localePattern);
+      const locale = localeMatch ? localeMatch[1] : routing.defaultLocale;
+      return NextResponse.redirect(new URL(`/${locale}/log-in`, req.url));
     }
-    
-    return intlResponse;
   }
-  
-  // For API routes, just check authentication if needed
-  if (!isPublicRoute(req)) {
-    await auth.protect();
-  }
-});
+
+  return intlMiddleware(req);
+}
 
 export const config = {
   matcher: [
     // Run middleware for everything except static files, _next, and API routes
-    "/((?!api|_next|sign-in|sign-up|forgot-password|reset-password|verify-email|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/((?!api|_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
   ],
 };

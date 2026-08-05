@@ -6,14 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build --turbopack",
     "start": "next start",
-    "sync:roles": "node scripts/syncRolesFromClerk.js",
-    "roles:default": "node scripts/setDefaultRoleForAllUsers.js",
-    "backfill:clerk": "node scripts/backfillClerkUsers.js",
     "lint": "eslint",
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.31.10",
     "@neondatabase/serverless": "^1.0.1",
     "@pixi/react": "^8.0.3",
     "@prisma/client": "^6.16.2",
@@ -26,6 +22,7 @@
     "@react-google-maps/api": "^2.20.7",
     "@tailwindcss/postcss": "^4.1.13",
     "@vercel/analytics": "^1.5.0",
+    "better-auth": "^1.6.25",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -40,8 +37,8 @@
     "react": "19.1.0",
     "react-day-picker": "^9.11.0",
     "react-dom": "19.1.0",
+    "resend": "^6.18.1",
     "slugify": "^1.6.6",
-    "svix": "^1.76.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.13"
   },

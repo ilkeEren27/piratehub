@@ -4,7 +4,7 @@ import { CalendarPlus } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { places } from "@/data/places";
-import { currentUser } from "@clerk/nextjs/server";
+import { getSessionUser } from "@/utils/roles";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 function getLocationName(locationId) {
@@ -65,24 +65,13 @@ export default async function EventsPage({ params }) {
   setRequestLocale(locale);
   const t = await getTranslations("events");
   
-  const user = await currentUser();
-  const role = user?.publicMetadata?.role ?? "User";
+  const user = await getSessionUser();
+  const role = user?.role ?? "User";
   const allowedRoles = new Set(["ClubLeader", "ASWU", "Faculty", "Admin"]);
   const canCreate = allowedRoles.has(role);
   const isModerator = role === "Admin" || role === "Moderator";
 
-  let appUserId = null;
-  if (user) {
-    try {
-      const appUser = await prisma.user.findUnique({
-        where: { clerkId: user.id },
-        select: { id: true },
-      });
-      appUserId = appUser?.id ?? null;
-    } catch (error) {
-      console.error("Error resolving app user:", error);
-    }
-  }
+  const appUserId = user?.id ?? null;
 
   let events = [];
   try {

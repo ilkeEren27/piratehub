@@ -335,6 +335,106 @@
       "creating": "Error al crear el evento:"
     }
   },
+  "auth": {
+    "signUp": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Únete a la comunidad de PirateHub",
+      "nameLabel": "Nombre completo",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "passwordHint": "Al menos 8 caracteres",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "submit": "Registrarse",
+      "submitting": "Creando cuenta…",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "logIn": "Inicia sesión",
+      "errors": {
+        "passwordMismatch": "Las contraseñas no coinciden",
+        "emailTaken": "Ya existe una cuenta con este correo electrónico",
+        "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+      }
+    },
+    "logIn": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en tu cuenta de PirateHub",
+      "emailLabel": "Correo electrónico",
+      "passwordLabel": "Contraseña",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate",
+      "resendVerification": "Reenviar correo de verificación",
+      "verificationSent": "¡Correo de verificación enviado! Revisa tu bandeja de entrada.",
+      "errors": {
+        "notVerified": "Por favor verifica tu correo antes de iniciar sesión.",
+        "invalid": "Correo o contraseña incorrectos",
+        "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+      }
+    },
+    "forgot": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Ingresa tu correo y te enviaremos un enlace para restablecerla",
+      "emailLabel": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "sentTitle": "Revisa tu bandeja de entrada 📬",
+      "sentBody": "Si existe una cuenta con ese correo, hemos enviado un enlace para restablecer la contraseña. Expira en 1 hora.",
+      "backToLogin": "Volver a iniciar sesión"
+    },
+    "reset": {
+      "title": "Elige una nueva contraseña",
+      "subtitle": "Ingresa una nueva contraseña para tu cuenta",
+      "passwordLabel": "Nueva contraseña",
+      "confirmPasswordLabel": "Confirmar nueva contraseña",
+      "submit": "Restablecer contraseña",
+      "submitting": "Restableciendo…",
+      "successTitle": "Contraseña actualizada ✅",
+      "successBody": "Tu contraseña ha sido cambiada. Ahora puedes iniciar sesión con tu nueva contraseña.",
+      "logIn": "Iniciar sesión",
+      "invalidTitle": "Enlace expirado",
+      "requestNewLink": "Solicitar un nuevo enlace",
+      "errors": {
+        "mismatch": "Las contraseñas no coinciden",
+        "invalidToken": "Este enlace es inválido o ha expirado. Por favor solicita uno nuevo.",
+        "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+      }
+    },
+    "verify": {
+      "checkTitle": "Verifica tu correo",
+      "checkBody": "Te hemos enviado un enlace de verificación. Haz clic en él para activar tu cuenta.",
+      "checkBodyWithEmail": "Hemos enviado un enlace de verificación a {email}. Haz clic en él para activar tu cuenta.",
+      "successTitle": "¡Correo verificado! 🎉",
+      "successBody": "Tu cuenta está activa y has iniciado sesión. ¡Bienvenido a bordo!",
+      "continue": "Continuar a PirateHub",
+      "errorTitle": "Verificación fallida",
+      "errorBody": "Este enlace de verificación es inválido o ha expirado. Ingresa tu correo para recibir uno nuevo.",
+      "emailLabel": "Correo electrónico",
+      "resend": "Reenviar correo de verificación",
+      "resending": "Enviando…",
+      "resent": "¡Correo de verificación enviado! Revisa tu bandeja de entrada."
+    },
+    "profile": {
+      "title": "Tu perfil",
+      "nameLabel": "Nombre completo",
+      "saveName": "Guardar nombre",
+      "nameUpdated": "¡Nombre actualizado!",
+      "changePasswordTitle": "Cambiar contraseña",
+      "changePasswordSubtitle": "Seguirás conectado aquí, pero se cerrará la sesión en otros dispositivos.",
+      "currentPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
+      "confirmNewPassword": "Confirmar nueva contraseña",
+      "changePassword": "Cambiar contraseña",
+      "passwordChanged": "¡Contraseña cambiada!",
+      "signOutHint": "Cierra la sesión de tu cuenta en este dispositivo.",
+      "signOut": "Cerrar sesión",
+      "errors": {
+        "mismatch": "Las contraseñas no coinciden",
+        "wrongPassword": "La contraseña actual es incorrecta",
+        "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+      }
+    }
+  },
   "notFound": {
     "title": "Esta página no existe 💀",
     "subtitle": "Ups, tomaste un giro equivocado. Esta página está totalmente perdida 🚧",

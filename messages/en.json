@@ -335,6 +335,106 @@
       "creating": "Error creating event:"
     }
   },
+  "auth": {
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Join the PirateHub community",
+      "nameLabel": "Full name",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "passwordHint": "At least 8 characters",
+      "confirmPasswordLabel": "Confirm password",
+      "submit": "Sign Up",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in",
+      "errors": {
+        "passwordMismatch": "Passwords don't match",
+        "emailTaken": "An account with this email already exists",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "logIn": {
+      "title": "Welcome back",
+      "subtitle": "Log in to your PirateHub account",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log In",
+      "submitting": "Logging in…",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "resendVerification": "Resend verification email",
+      "verificationSent": "Verification email sent! Check your inbox.",
+      "errors": {
+        "notVerified": "Please verify your email before logging in.",
+        "invalid": "Invalid email or password",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email and we'll send you a reset link",
+      "emailLabel": "Email",
+      "submit": "Send reset link",
+      "submitting": "Sending…",
+      "sentTitle": "Check your inbox 📬",
+      "sentBody": "If an account exists with that email, we've sent a password reset link. It expires in 1 hour.",
+      "backToLogin": "Back to log in"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "subtitle": "Enter a new password for your account",
+      "passwordLabel": "New password",
+      "confirmPasswordLabel": "Confirm new password",
+      "submit": "Reset password",
+      "submitting": "Resetting…",
+      "successTitle": "Password updated ✅",
+      "successBody": "Your password has been changed. You can now log in with your new password.",
+      "logIn": "Log in",
+      "invalidTitle": "Link expired",
+      "requestNewLink": "Request a new link",
+      "errors": {
+        "mismatch": "Passwords don't match",
+        "invalidToken": "This reset link is invalid or has expired. Please request a new one.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "verify": {
+      "checkTitle": "Verify your email",
+      "checkBody": "We've sent you a verification link. Click it to activate your account.",
+      "checkBodyWithEmail": "We've sent a verification link to {email}. Click it to activate your account.",
+      "successTitle": "Email verified! 🎉",
+      "successBody": "Your account is active and you're logged in. Welcome aboard!",
+      "continue": "Continue to PirateHub",
+      "errorTitle": "Verification failed",
+      "errorBody": "This verification link is invalid or has expired. Enter your email to get a new one.",
+      "emailLabel": "Email",
+      "resend": "Resend verification email",
+      "resending": "Sending…",
+      "resent": "Verification email sent! Check your inbox."
+    },
+    "profile": {
+      "title": "Your profile",
+      "nameLabel": "Full name",
+      "saveName": "Save name",
+      "nameUpdated": "Name updated!",
+      "changePasswordTitle": "Change password",
+      "changePasswordSubtitle": "You'll stay logged in here, but other devices will be logged out.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "changePassword": "Change password",
+      "passwordChanged": "Password changed!",
+      "signOutHint": "Sign out of your account on this device.",
+      "signOut": "Sign Out",
+      "errors": {
+        "mismatch": "Passwords don't match",
+        "wrongPassword": "Current password is incorrect",
+        "generic": "Something went wrong. Please try again."
+      }
+    }
+  },
   "notFound": {
     "title": "This page doesn’t exist 💀",
     "subtitle": "Oops, you took a wrong turn. This page is totally lost 🚧",

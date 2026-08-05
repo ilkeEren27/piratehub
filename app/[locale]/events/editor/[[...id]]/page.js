@@ -1,6 +1,6 @@
 import EventForm from "@/components/events/EventForm";
 import { notFound } from "next/navigation";
-import { currentUser } from "@clerk/nextjs/server";
+import { getSessionUser } from "@/utils/roles";
 
 import { prisma } from "@/lib/db";
 
@@ -14,16 +14,11 @@ export default async function EventEditorPage({ params }) {
     : null;
 
   if (event) {
-    const user = await currentUser();
+    const user = await getSessionUser();
     if (!user) notFound();
 
-    const appUser = await prisma.user.findUnique({
-      where: { clerkId: user.id },
-      select: { id: true, role: true },
-    });
-    const isOwner = appUser && event.organizerId === appUser.id;
-    const isModerator =
-      appUser?.role === "Admin" || appUser?.role === "Moderator";
+    const isOwner = event.organizerId === user.id;
+    const isModerator = user.role === "Admin" || user.role === "Moderator";
     if (!isOwner && !isModerator) notFound();
   }
 

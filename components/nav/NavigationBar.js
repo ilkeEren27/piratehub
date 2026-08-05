@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "../ui/button";
 import {
@@ -15,37 +16,42 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-import { 
-  Map, 
-  Calendar, 
-  BookOpen, 
-  Users, 
-  User, 
-  Shield, 
-  LogIn, 
+import {
+  Map,
+  Calendar,
+  BookOpen,
+  Users,
+  User,
+  Shield,
+  LogIn,
   UserPlus,
   LogOut,
   Compass
 } from "lucide-react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  SignUpButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { authClient, useSession } from "@/lib/auth-client";
 import ThemeToggle from "./ThemeToggle";
 import LocaleSwitcher from "./LocaleSwitcher";
 
 export default function NavigationBar() {
   const t = useTranslations("nav");
   const locale = useLocale();
-  const { user } = useUser();
-  const role = user?.publicMetadata?.role;
+  const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user;
+  const role = user?.role;
   const isAdmin = role === "Admin";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push(`/${locale}`);
+    router.refresh();
+  };
+
+  const userInitial = (user?.name || user?.email || "?")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
 
   return (
     <div>
@@ -97,22 +103,48 @@ export default function NavigationBar() {
         <div className="flex gap-3 flex-1 min-w-0 justify-end">
           <LocaleSwitcher />
           <ThemeToggle />
-          <SignedOut>
-            <SignUpButton>
-              <Button>{t("signUp")}</Button>
-            </SignUpButton>
-            <SignInButton>
-              <Button>{t("login")}</Button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            {isAdmin && (
-              <Link href={`/${locale}/admin`}>
-                <Button>{t("adminPanel")}</Button>
+          {!user ? (
+            <>
+              <Link href={`/${locale}/sign-up`}>
+                <Button>{t("signUp")}</Button>
               </Link>
-            )}
-            <UserButton />
-          </SignedIn>
+              <Link href={`/${locale}/log-in`}>
+                <Button>{t("login")}</Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              {isAdmin && (
+                <Link href={`/${locale}/admin`}>
+                  <Button>{t("adminPanel")}</Button>
+                </Link>
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="h-9 w-9 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30">
+                  {userInitial}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" sideOffset={8}>
+                  <DropdownMenuLabel className="max-w-48 truncate">
+                    {user.name}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href={`/${locale}/user-profile`} className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-primary" />
+                      {t("profile")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer text-destructive focus:text-destructive"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="h-4 w-4 text-destructive" />
+                    {t("signOut")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </div>
       </header>
       {/* Mobile Navigation Bar */}
@@ -122,17 +154,17 @@ export default function NavigationBar() {
             {/* Animated Hamburger Icon */}
             <DropdownMenuTrigger className="group relative h-10 w-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-md hover:shadow-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/30">
               <div className="flex flex-col justify-center items-center w-5 h-5">
-                <span 
+                <span
                   className={`block h-0.5 w-5 bg-gradient-to-r from-primary to-accent rounded-full transform transition-all duration-300 ease-out ${
                     isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
                   }`}
                 />
-                <span 
+                <span
                   className={`block h-0.5 w-5 bg-gradient-to-r from-primary to-accent rounded-full my-1 transition-all duration-300 ease-out ${
                     isMenuOpen ? 'opacity-0 scale-0' : ''
                   }`}
                 />
-                <span 
+                <span
                   className={`block h-0.5 w-5 bg-gradient-to-r from-primary to-accent rounded-full transform transition-all duration-300 ease-out ${
                     isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
                   }`}
@@ -141,7 +173,7 @@ export default function NavigationBar() {
             </DropdownMenuTrigger>
 
             {/* Enhanced Dropdown Menu */}
-            <DropdownMenuContent 
+            <DropdownMenuContent
               className="w-64 p-0 bg-card/95 backdrop-blur-md border border-primary/20 shadow-xl shadow-primary/5 rounded-xl overflow-hidden"
               align="start"
               sideOffset={8}
@@ -202,49 +234,49 @@ export default function NavigationBar() {
                 <DropdownMenuLabel className="px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
                   {t("user")}
                 </DropdownMenuLabel>
-                <SignedOut>
-                  <SignUpButton mode="modal">
-                    <DropdownMenuItem className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
-                      <div className="flex items-center gap-3 w-full">
+                {!user ? (
+                  <>
+                    <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
+                      <Link href={`/${locale}/sign-up`} className="flex items-center gap-3">
                         <div className="p-1.5 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
                           <UserPlus className="h-4 w-4 text-primary" />
                         </div>
                         <span className="font-medium">{t("signUp")}</span>
-                      </div>
+                      </Link>
                     </DropdownMenuItem>
-                  </SignUpButton>
-                  <SignInButton mode="modal">
-                    <DropdownMenuItem className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
-                      <div className="flex items-center gap-3 w-full">
+                    <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
+                      <Link href={`/${locale}/log-in`} className="flex items-center gap-3">
                         <div className="p-1.5 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors">
                           <LogIn className="h-4 w-4 text-accent" />
                         </div>
                         <span className="font-medium">{t("login")}</span>
-                      </div>
-                    </DropdownMenuItem>
-                  </SignInButton>
-                </SignedOut>
-                <SignedIn>
-                  <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
-                    <Link href={`/${locale}/user-profile`} className="flex items-center gap-3">
-                      <div className="p-1.5 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                        <User className="h-4 w-4 text-primary" />
-                      </div>
-                      <span className="font-medium">{t("profile")}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
-                      <Link href={`/${locale}/admin`} className="flex items-center gap-3">
-                        <div className="p-1.5 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors">
-                          <Shield className="h-4 w-4 text-accent" />
-                        </div>
-                        <span className="font-medium">{t("adminPanel")}</span>
                       </Link>
                     </DropdownMenuItem>
-                  )}
-                  <SignOutButton>
-                    <DropdownMenuItem className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-destructive/10">
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
+                      <Link href={`/${locale}/user-profile`} className="flex items-center gap-3">
+                        <div className="p-1.5 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                          <User className="h-4 w-4 text-primary" />
+                        </div>
+                        <span className="font-medium">{t("profile")}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem asChild className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10">
+                        <Link href={`/${locale}/admin`} className="flex items-center gap-3">
+                          <div className="p-1.5 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors">
+                            <Shield className="h-4 w-4 text-accent" />
+                          </div>
+                          <span className="font-medium">{t("adminPanel")}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem
+                      className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-destructive/10"
+                      onClick={handleSignOut}
+                    >
                       <div className="flex items-center gap-3 w-full">
                         <div className="p-1.5 rounded-md bg-destructive/10 group-hover:bg-destructive/20 transition-colors">
                           <LogOut className="h-4 w-4 text-destructive" />
@@ -252,8 +284,8 @@ export default function NavigationBar() {
                         <span className="font-medium text-destructive">{t("signOut")}</span>
                       </div>
                     </DropdownMenuItem>
-                  </SignOutButton>
-                </SignedIn>
+                  </>
+                )}
               </div>
 
               {/* Footer Gradient */}

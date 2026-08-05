@@ -1,4 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
@@ -39,22 +38,20 @@ export default async function LocaleLayout({ children, params }) {
   const messages = await getMessages();
 
   return (
-    <ClerkProvider>
-      <html lang={locale}>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
-        >
-          <NextIntlClientProvider messages={messages}>
-            <NavigationBar />
-            <main className="flex-1">
-              {children}
-              <Analytics />
-            </main>
-            <Footer messages={messages} />
-          </NextIntlClientProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang={locale}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+      >
+        <NextIntlClientProvider messages={messages}>
+          <NavigationBar />
+          <main className="flex-1">
+            {children}
+            <Analytics />
+          </main>
+          <Footer messages={messages} />
+        </NextIntlClientProvider>
+      </body>
+    </html>
   );
 }
 

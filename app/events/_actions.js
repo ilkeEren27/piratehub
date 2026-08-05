@@ -1,6 +1,6 @@
 "use server";
 
-import { currentUser } from "@clerk/nextjs/server";
+import { getSessionUser } from "@/utils/roles";
 import { prisma } from "@/lib/db";
 import { customAlphabet } from "nanoid";
 import { checkBlocklist, checkOpenAIModeration } from "@/lib/moderation";
@@ -9,9 +9,8 @@ import slugify from "slugify";
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 8);
 
 export async function upsertEventAction(formData) {
-  const user = await currentUser();
+  const user = await getSessionUser();
   if (!user) throw new Error("Not signed in");
-  const userId = user.id;
 
   const id = formData.get("id");
   const title = String(formData.get("title") || "").trim();
@@ -34,9 +33,6 @@ export async function upsertEventAction(formData) {
     throw new Error("End date can't be earlier than start date");
   if (!location) throw new Error("Location is required");
 
-  const appUser = await prisma.user.findUnique({ where: { clerkId: userId } });
-  if (!appUser) throw new Error("App user not found");
-
   // Content moderation
   const textToCheck = [title, description].filter(Boolean).join(" ");
 
@@ -56,9 +52,8 @@ export async function upsertEventAction(formData) {
     });
     if (!existing) throw new Error("Event not found");
 
-    const isOwner = existing.organizerId === appUser.id;
-    const isModerator =
-      appUser.role === "Admin" || appUser.role === "Moderator";
+    const isOwner = existing.organizerId === user.id;
+    const isModerator = user.role === "Admin" || user.role === "Moderator";
     if (!isOwner && !isModerator) {
       throw new Error("You do not have permission to edit this event");
     }
@@ -92,7 +87,7 @@ export async function upsertEventAction(formData) {
         startsAt,
         endsAt,
         allDay,
-        organizerId: appUser.id,
+        organizerId: user.id,
         published: true,
         moderationStatus,
       },
@@ -101,11 +96,10 @@ export async function upsertEventAction(formData) {
 }
 
 export async function moderateEventAction(formData) {
-  const user = await currentUser();
+  const user = await getSessionUser();
   if (!user) throw new Error("Not signed in");
 
-  const role = user.publicMetadata?.role;
-  if (role !== "Admin" && role !== "Moderator") {
+  if (user.role !== "Admin" && user.role !== "Moderator") {
     throw new Error("Not authorized");
   }
 

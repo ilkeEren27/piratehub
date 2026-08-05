@@ -24,18 +24,72 @@ enum ModerationStatus {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
+  id            String    @id
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  clerkId   String    @unique
-  email     String    @unique
-  name      String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  name          String
+  image         String?
 
-  role      Role      @default(User)
+  role          Role      @default(User)
 
-  posts     Post[]
-  comments  Comment[]
-  events    Event[]   @relation("UserEvents")
+  sessions      Session[]
+  accounts      Account[]
+
+  posts         Post[]
+  comments      Comment[]
+  events        Event[]   @relation("UserEvents")
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@index([identifier])
 }
 
 model Post {
@@ -50,7 +104,7 @@ model Post {
   contentJson Json       // TipTap JSON
 
   author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    Int
+  authorId    String
 
   attachments Attachment[]
   comments    Comment[]
@@ -67,7 +121,7 @@ model Comment {
   content    String
 
   author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId   Int
+  authorId   String
   post       Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     Int
 
@@ -97,7 +151,7 @@ model Event {
   allDay      Boolean   @default(false)
 
   organizer        User?            @relation("UserEvents", fields: [organizerId], references: [id], onDelete: SetNull)
-  organizerId      Int?
+  organizerId      String?
 
   moderationStatus ModerationStatus @default(Approved)
 

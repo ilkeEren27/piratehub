@@ -18,8 +18,9 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
   - Clean event cards with time, location, and optional images.
 - **Authentication & Roles**
 
-  - Secure sign-in/sign-up with [Clerk](https://clerk.com).
-  - Roles: `Admin`, `Moderator`, `Faculty`, `ASWU`, `ClubLeader`, `User`.
+  - Email/password auth with [Better Auth](https://better-auth.com) — custom sign-up/log-in pages, email verification, and password reset.
+  - Verification/reset emails sent via [Resend](https://resend.com) with fully customizable templates (`lib/email.js`).
+  - Roles: `Admin`, `Moderator`, `Faculty`, `ASWU`, `ClubLeader`, `User` — stored in our own database.
   - Admin dashboard with user management tools.
 - **Social Hub (in progress)**
 
@@ -36,9 +37,27 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
 
 - **Framework**: [Next.js 15](https://nextjs.org)
 - **UI**: TailwindCSS + Shadcn UI
-- **Auth**: Clerk
+- **Auth**: Better Auth + Resend (transactional emails)
 - **Database**: Prisma ORM (configurable with Postgres/Mongo)
 - **Hosting**: Vercel
+
+---
+
+## Environment Variables
+
+```bash
+# Database (Neon Postgres)
+POSTGRES_PRISMA_URL=        # pooled connection string
+POSTGRES_URL_NON_POOLING=   # direct connection string (for migrations)
+
+# Better Auth
+BETTER_AUTH_SECRET=         # random 32+ char secret (npx @better-auth/cli secret)
+BETTER_AUTH_URL=            # app URL, e.g. http://localhost:3000 or https://yourdomain.com
+
+# Emails (Resend)
+RESEND_API_KEY=             # from resend.com dashboard
+EMAIL_FROM=                 # e.g. "PirateHub <noreply@yourdomain.com>" (optional, defaults to onboarding@resend.dev)
+```
 
 ---
 
@@ -48,7 +67,7 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
 ├── app/
 │   ├── admin/          # Admin dashboard
 │   ├── events/         # Events pages + editor
-│   ├── log-in/         # Auth pages (Clerk)
+│   ├── log-in/         # Custom auth pages (Better Auth)
 │   ├── sign-up/
 │   ├── map/            # Interactive campus map
 │   ├── social/         # Social hub (forum)
@@ -68,7 +87,10 @@ It brings together events, clubs, maps, and a social hub, all in one clean inter
 │   ├── mapIcons.js
 │   ├── utils.js
 │
-├── utils/roles.js      # Role utilities (Admin, User, etc.)
+├── lib/auth.js         # Better Auth server config (email flows, roles)
+├── lib/auth-client.js  # Better Auth browser client (useSession, signIn, ...)
+├── lib/email.js        # Resend email templates (edit these freely)
+├── utils/roles.js      # Session + role helpers (getSessionUser, checkRole)
 ├── public/             # Images, logos, assets
-├── middleware.js       # Clerk middleware + role handling
+├── middleware.js       # next-intl + session-cookie route protection
 ```

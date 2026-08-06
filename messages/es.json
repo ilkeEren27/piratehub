@@ -19,7 +19,27 @@
   },
   "home": {
     "welcome": "¡Bienvenido a PirateHub!",
-    "description": "He comenzado a construir esta aplicación de vida universitaria para piratas con un objetivo principal: crear una comunidad digital del campus, una plataforma donde los piratas puedan conectarse entre sí, descubrir eventos y navegar el campus con facilidad."
+    "description": "He comenzado a construir esta aplicación de vida universitaria para piratas con un objetivo principal: crear una comunidad digital del campus, una plataforma donde los piratas puedan conectarse entre sí, descubrir eventos y navegar el campus con facilidad.",
+    "exploreMap": "Explora el Mapa",
+    "browseEvents": "Ver Eventos",
+    "features": {
+      "map": {
+        "title": "Mapa del Campus",
+        "desc": "Encuentra edificios, lugares de estudio y comedores con un mapa interactivo del campus."
+      },
+      "events": {
+        "title": "Eventos",
+        "desc": "Descubre lo que está pasando en el campus y no te pierdas nada."
+      },
+      "guide": {
+        "title": "Guía del Campus",
+        "desc": "Todo lo que necesitas saber para navegar la vida universitaria."
+      },
+      "social": {
+        "title": "Social",
+        "desc": "Mantente al día con las últimas publicaciones de las cuentas del campus."
+      }
+    }
   },
   "footer": {
     "madeBy": "Hecho por",
@@ -212,6 +232,8 @@
     }
   },
   "events": {
+    "title": "Próximos Eventos",
+    "description": "Mira lo que está pasando en el campus y únete.",
     "createNew": "Crear Nuevo Evento",
     "noEvents": "No hay eventos programados. ¡Crea el primer evento!",
     "showLocation": "Mostrar Ubicación",
@@ -327,12 +349,16 @@
     "descriptionPlaceholder": "Cuéntanos de qué trata tu evento...",
     "saveChanges": "Guardar Cambios",
     "createButton": "Crear Evento",
+    "deleteButton": "Eliminar Evento",
+    "deleting": "Eliminando…",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este evento? Esto no se puede deshacer.",
     "reviewNotice": "Tu evento será revisado antes de ser visible para todos los usuarios",
     "errors": {
       "invalidDates": "Por favor selecciona fechas y horas de inicio y fin válidas",
       "endBeforeStart": "La fecha de fin no puede ser anterior a la fecha de inicio",
       "pastStart": "La fecha/hora de inicio no puede ser en el pasado",
-      "creating": "Error al crear el evento:"
+      "creating": "Error al crear el evento:",
+      "deleting": "Error al eliminar el evento:"
     }
   },
   "auth": {

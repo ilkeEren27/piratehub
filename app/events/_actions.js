@@ -95,6 +95,28 @@ export async function upsertEventAction(formData) {
   }
 }
 
+export async function deleteEventAction(formData) {
+  const user = await getSessionUser();
+  if (!user) throw new Error("Not signed in");
+
+  const id = Number(formData.get("id"));
+  if (!id) throw new Error("Event id is required");
+
+  const existing = await prisma.event.findUnique({
+    where: { id },
+    select: { organizerId: true },
+  });
+  if (!existing) throw new Error("Event not found");
+
+  const isOwner = existing.organizerId === user.id;
+  const isModerator = user.role === "Admin" || user.role === "Moderator";
+  if (!isOwner && !isModerator) {
+    throw new Error("You do not have permission to delete this event");
+  }
+
+  return prisma.event.delete({ where: { id } });
+}
+
 export async function moderateEventAction(formData) {
   const user = await getSessionUser();
   if (!user) throw new Error("Not signed in");

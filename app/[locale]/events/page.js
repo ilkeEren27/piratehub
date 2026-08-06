@@ -1,6 +1,6 @@
 import EventCard from "@/components/cards/EventCard";
 import { Button } from "@/components/ui/button";
-import { CalendarPlus } from "lucide-react";
+import { CalendarPlus, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { places } from "@/data/places";
@@ -102,21 +102,30 @@ export default async function EventsPage({ params }) {
 
   return (
     <main className="animate-fade-in">
-      <div className="flex justify-end my-4 mx-4">
+      <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-12 md:mt-16 mx-4 sm:mx-10">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-bold pb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-lg text-muted-foreground">{t("description")}</p>
+        </div>
         {canCreate && (
           <Link href={`/${locale}/events/editor`}>
-            <Button>
+            <Button size="lg" className="shadow-md">
               <CalendarPlus />
               {t("createNew")}
             </Button>
           </Link>
         )}
-      </div>
-      <section className="grid justify-center mt-16 mx-4 sm:mx-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      </section>
+      <section className="grid justify-center mt-10 mb-16 mx-4 sm:mx-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {transformedEvents.length === 0 ? (
-          <p className="col-span-full text-center text-lg text-muted-foreground">
-            {t("noEvents")}
-          </p>
+          <div className="col-span-full flex flex-col items-center gap-4 py-16 rounded-xl border border-dashed bg-card/50 text-center">
+            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <CalendarDays className="h-7 w-7 text-primary" />
+            </div>
+            <p className="text-lg text-muted-foreground max-w-md px-4">{t("noEvents")}</p>
+          </div>
         ) : (
           transformedEvents
             .toReversed()

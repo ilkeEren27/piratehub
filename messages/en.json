@@ -19,7 +19,27 @@
   },
   "home": {
     "welcome": "Welcome to PirateHub!",
-    "description": "I've started building this campus-life app for pirates with one main goal: create a digital campus community, a platform where pirates can connect with each other, discover events, and navigate campus with ease."
+    "description": "I've started building this campus-life app for pirates with one main goal: create a digital campus community, a platform where pirates can connect with each other, discover events, and navigate campus with ease.",
+    "exploreMap": "Explore the Map",
+    "browseEvents": "Browse Events",
+    "features": {
+      "map": {
+        "title": "Campus Map",
+        "desc": "Find buildings, study spots, and dining with an interactive campus map."
+      },
+      "events": {
+        "title": "Events",
+        "desc": "Discover what's happening on campus and never miss out."
+      },
+      "guide": {
+        "title": "Campus Guide",
+        "desc": "Everything you need to know to navigate campus life."
+      },
+      "social": {
+        "title": "Social",
+        "desc": "Keep up with the latest posts from campus accounts."
+      }
+    }
   },
   "footer": {
     "madeBy": "Made by",
@@ -212,6 +232,8 @@
     }
   },
   "events": {
+    "title": "Upcoming Events",
+    "description": "See what's happening around campus and join in.",
     "createNew": "Create New Event",
     "noEvents": "No events scheduled. Create the first event!",
     "showLocation": "Show Location",
@@ -327,12 +349,16 @@
     "descriptionPlaceholder": "Tell people what your event is about...",
     "saveChanges": "Save Changes",
     "createButton": "Create Event",
+    "deleteButton": "Delete Event",
+    "deleting": "Deleting…",
+    "deleteConfirm": "Are you sure you want to delete this event? This cannot be undone.",
     "reviewNotice": "Your event will be reviewed before it becomes visible to all users",
     "errors": {
       "invalidDates": "Please select valid start and end date and time",
       "endBeforeStart": "End date can't be earlier than start date",
       "pastStart": "Start date/time can't be in the past",
-      "creating": "Error creating event:"
+      "creating": "Error creating event:",
+      "deleting": "Error deleting event:"
     }
   },
   "auth": {

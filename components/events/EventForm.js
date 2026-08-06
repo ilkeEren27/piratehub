@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { places } from "@/data/places";
-import { upsertEventAction } from "@/app/events/_actions";
+import { upsertEventAction, deleteEventAction } from "@/app/events/_actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +21,8 @@ import {
   Type, 
   FileText,
   Sparkles,
-  Calendar as CalendarLucide
+  Calendar as CalendarLucide,
+  Trash2
 } from "lucide-react";
 
 export default function EventForm({ initialEvent }) {
@@ -83,6 +84,24 @@ export default function EventForm({ initialEvent }) {
     () => formatForSubmission(endDate, endTime),
     [endDate, endTime]
   );
+
+  const [deleting, setDeleting] = useState(false);
+
+  async function onDelete() {
+    if (!initialEvent?.id) return;
+    if (!window.confirm(t("deleteConfirm"))) return;
+    setDeleting(true);
+    try {
+      const fd = new FormData();
+      fd.set("id", String(initialEvent.id));
+      await deleteEventAction(fd);
+      window.location.href = "/events";
+    } catch (error) {
+      console.error("Event deletion error:", error);
+      alert(`${t("errors.deleting")} ${error.message}`);
+      setDeleting(false);
+    }
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -380,13 +399,25 @@ export default function EventForm({ initialEvent }) {
             </div>
 
             {/* Submit Button */}
-            <div className="pt-4">
+            <div className="pt-4 space-y-3">
               <Button
                 type="submit"
                 className="w-full py-6 text-lg font-semibold rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:shadow-primary/25"
               >
                 {initialEvent ? t("saveChanges") : t("createButton")}
               </Button>
+              {isEditing && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={deleting}
+                  onClick={onDelete}
+                  className="w-full py-6 text-lg font-semibold rounded-xl border-destructive/50 text-destructive hover:bg-destructive hover:text-white transition-all duration-200"
+                >
+                  <Trash2 className="w-5 h-5" />
+                  {deleting ? t("deleting") : t("deleteButton")}
+                </Button>
+              )}
             </div>
           </form>
         </div>

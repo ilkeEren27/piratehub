@@ -188,7 +188,7 @@ export default function NavigationBar() {
               <div className="bg-gradient-to-r from-primary/20 via-accent/10 to-primary/20 px-4 py-3 border-b border-primary/10">
                 <div className="flex items-center gap-2">
                   <Compass className="h-5 w-5 text-primary" />
-                  <span className="font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <span className="font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     PirateHub
                   </span>
                 </div>

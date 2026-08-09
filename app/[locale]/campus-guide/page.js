@@ -12,23 +12,18 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { guideCards } from "@/data/guideCards";
 import { useTranslations } from "next-intl";
+import PageHeader, { PAGE_MARGIN } from "@/components/PageHeader";
 
 export default function CampusGuidePage() {
   const t = useTranslations("campusGuide");
-  
+
   return (
     <main className="animate-fade-in">
-      <section className="flex flex-col items-center justify-center my-12 md:my-16 px-4">
-        <div className="flex flex-col items-center w-full max-w-7xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 pb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent text-center">
-            {t("title")}
-          </h1>
-          <p className="mt-2 text-lg md:text-xl max-w-2xl text-center text-muted-foreground leading-relaxed mb-8">
-            {t("description")}
-          </p>
-
-          {/* Cards Grid - Responsive: 4 columns on desktop, 1 on mobile */}
-          <div className="grid justify-center w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      <PageHeader title={t("title")} description={t("description")} />
+      <section className="mb-16">
+        <div
+          className={`grid justify-center mt-10 ${PAGE_MARGIN} grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4`}
+        >
             {guideCards.map((card) => {
               const cardT = t.raw(`cards.${card.key}`);
               return (
@@ -73,7 +68,6 @@ export default function CampusGuidePage() {
                 </Card>
               );
             })}
-          </div>
         </div>
       </section>
     </main>

@@ -356,7 +356,7 @@ export default function NavigationBar() {
             href={`/${locale}`}
             className="transition-opacity duration-200 hover:opacity-80"
           >
-            <h1 className="font-semibold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="font-bold text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               PirateHub
             </h1>
           </Link>

@@ -23,6 +23,15 @@ enum ModerationStatus {
   Rejected
 }
 
+enum Flair {
+  General
+  Class
+  Clubs
+  Events
+  Announcements
+  Help
+}
+
 model User {
   id            String    @id
   createdAt     DateTime  @default(now())
@@ -41,6 +50,8 @@ model User {
   posts         Post[]
   comments      Comment[]
   events        Event[]   @relation("UserEvents")
+  postVotes     PostVote[]
+  commentVotes  CommentVote[]
 }
 
 model Session {
@@ -96,21 +107,57 @@ model Post {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  published   Boolean    @default(false)
+  published   Boolean    @default(true)
 
   title       String     @db.VarChar(255)
   slug        String     @unique
   excerpt     String?    @db.VarChar(300)
   contentJson Json       // TipTap JSON
+  flair       Flair      @default(General)
+
+  moderationStatus ModerationStatus @default(Approved)
 
   author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
 
   attachments Attachment[]
   comments    Comment[]
+  votes       PostVote[]
 
   @@index([authorId])
   @@index([createdAt])
+  @@index([flair])
+  @@index([moderationStatus])
+}
+
+model PostVote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  value     Int      // 1 = upvote, -1 = downvote
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+
+  @@unique([userId, postId])
+  @@index([postId])
+}
+
+model CommentVote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  value     Int      // 1 = upvote, -1 = downvote
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+
+  @@unique([userId, commentId])
+  @@index([commentId])
 }
 
 model Comment {
@@ -128,6 +175,7 @@ model Comment {
   parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   parentId   Int?
   children   Comment[] @relation("CommentReplies")
+  votes      CommentVote[]
 
   @@index([postId])
   @@index([authorId])

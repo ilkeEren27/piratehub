@@ -1,4 +1,5 @@
 import EventCard from "@/components/cards/EventCard";
+import PageHeader, { PAGE_MARGIN } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { CalendarPlus, CalendarDays } from "lucide-react";
 import Link from "next/link";
@@ -102,13 +103,7 @@ export default async function EventsPage({ params }) {
 
   return (
     <main className="animate-fade-in">
-      <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-12 md:mt-16 mx-4 sm:mx-10">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold pb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            {t("title")}
-          </h1>
-          <p className="mt-2 text-lg text-muted-foreground">{t("description")}</p>
-        </div>
+      <PageHeader title={t("title")} description={t("description")}>
         {canCreate && (
           <Link href={`/${locale}/events/editor`}>
             <Button size="lg" className="shadow-md">
@@ -117,8 +112,10 @@ export default async function EventsPage({ params }) {
             </Button>
           </Link>
         )}
-      </section>
-      <section className="grid justify-center mt-10 mb-16 mx-4 sm:mx-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      </PageHeader>
+      <section
+        className={`grid justify-center mt-10 mb-16 ${PAGE_MARGIN} grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4`}
+      >
         {transformedEvents.length === 0 ? (
           <div className="col-span-full flex flex-col items-center gap-4 py-16 rounded-xl border border-dashed bg-card/50 text-center">
             <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">

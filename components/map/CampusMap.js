@@ -170,7 +170,7 @@ export default function CampusMap() {
   );
 
   return (
-    <div className="w-full h-[calc(100dvh-72px)] grid grid-rows-[auto_auto_auto_1fr] sm:rounded-xl overflow-hidden bg-background sm:shadow-lg">
+    <div className="w-full h-[max(480px,calc(100dvh-280px))] grid grid-rows-[auto_auto_auto_1fr] rounded-xl border border-border/50 overflow-hidden bg-background shadow-lg">
       {/* Search bar */}
       <div className="p-2 sm:p-3 relative" ref={searchRef}>
         <div className="relative">

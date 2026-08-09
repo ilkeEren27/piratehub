@@ -37,7 +37,7 @@
       },
       "social": {
         "title": "Social",
-        "desc": "Keep up with the latest posts from campus accounts."
+        "desc": "Ask questions, share posts, and vote on what matters to pirates."
       }
     }
   },
@@ -46,6 +46,8 @@
     "with": "with"
   },
   "map": {
+    "title": "Campus Map",
+    "description": "Find buildings, study spots, and everything else around campus.",
     "loadError": "Failed to load Google Maps.",
     "loading": "Loading map…",
     "searchPlaceholder": "Search for a location...",
@@ -297,8 +299,86 @@
     }
   },
   "social": {
-    "title": "Instagram Feed",
-    "description": "Latest posts from campus Instagram accounts"
+    "title": "Social",
+    "description": "Ask, share, and connect with fellow pirates.",
+    "newPost": "New Post",
+    "allFlairs": "All",
+    "sortNew": "New",
+    "sortTop": "Top",
+    "noPosts": "No posts yet. Be the first pirate to start a conversation!",
+    "pendingBadge": "Pending review",
+    "commentCount": "{count, plural, one {# comment} other {# comments}}",
+    "commentsTitle": "Comments ({count})",
+    "commentPlaceholder": "Share your thoughts...",
+    "replyPlaceholder": "Write a reply...",
+    "comment": "Comment",
+    "reply": "Reply",
+    "cancel": "Cancel",
+    "noComments": "No comments yet. Start the discussion!",
+    "signInToComment": "Log in to join the discussion.",
+    "signIn": "Log In",
+    "backToBoard": "Back to board",
+    "edit": "Edit",
+    "deleteCommentConfirm": "Delete this comment? Replies to it will be deleted too.",
+    "errors": {
+      "commenting": "Error posting comment:",
+      "deletingComment": "Error deleting comment:"
+    },
+    "flairs": {
+      "General": "General",
+      "Class": "Class",
+      "Clubs": "Clubs",
+      "Events": "Events",
+      "Announcements": "Announcements",
+      "Help": "Help"
+    }
+  },
+  "postForm": {
+    "createTitle": "Create a Post",
+    "editTitle": "Edit Post",
+    "createDescription": "Share something with the campus community",
+    "editDescription": "Update your post below",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Give your post a clear title...",
+    "flairLabel": "Flair",
+    "bodyLabel": "Body",
+    "bodyPlaceholder": "Write your post… use the toolbar for formatting, links, and images.",
+    "attachmentsLabel": "Attachments",
+    "attachmentsHint": "(optional — images, PDF, or Word · max 5 files · 10 MB each)",
+    "addAttachment": "Attach a file",
+    "removeAttachment": "Remove",
+    "uploading": "Uploading…",
+    "createButton": "Post",
+    "saveChanges": "Save Changes",
+    "deleteButton": "Delete Post",
+    "deleting": "Deleting…",
+    "deleteConfirm": "Are you sure you want to delete this post? This cannot be undone.",
+    "pendingNotice": "Your post was flagged for review and will appear for everyone once a moderator approves it.",
+    "reviewNotice": "Posts are subject to community moderation",
+    "linkPrompt": "Enter a URL",
+    "toolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strikethrough",
+      "heading": "Heading",
+      "subheading": "Subheading",
+      "bulletList": "Bullet list",
+      "orderedList": "Numbered list",
+      "quote": "Quote",
+      "codeBlock": "Code block",
+      "link": "Add link",
+      "unlink": "Remove link",
+      "image": "Insert image",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
+    "errors": {
+      "creating": "Error submitting post:",
+      "deleting": "Error deleting post:",
+      "uploading": "Error uploading file:",
+      "invalidLink": "Links must start with http://, https://, or mailto:",
+      "tooManyAttachments": "You can attach at most 5 files"
+    }
   },
   "language": {
     "switchTo": "Español"
@@ -320,13 +400,17 @@
     }
   },
   "moderation": {
-    "title": "Event Moderation Queue",
+    "title": "Moderation Queue",
+    "eventsSection": "Events",
+    "postsSection": "Posts",
     "noEvents": "No events pending review.",
+    "noPosts": "No posts pending review.",
     "by": "By",
     "at": "at",
     "approve": "Approve",
     "reject": "Reject",
-    "unknownOrganizer": "Unknown"
+    "unknownOrganizer": "Unknown",
+    "viewPost": "View post"
   },
   "eventForm": {
     "editTitle": "Edit Event",

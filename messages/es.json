@@ -37,7 +37,7 @@
       },
       "social": {
         "title": "Social",
-        "desc": "Mantente al día con las últimas publicaciones de las cuentas del campus."
+        "desc": "Haz preguntas, comparte publicaciones y vota lo que importa a los piratas."
       }
     }
   },
@@ -46,6 +46,8 @@
     "with": "con"
   },
   "map": {
+    "title": "Mapa del Campus",
+    "description": "Encuentra edificios, lugares de estudio y todo lo demás en el campus.",
     "loadError": "Error al cargar Google Maps.",
     "loading": "Cargando mapa…",
     "searchPlaceholder": "Buscar una ubicación...",
@@ -297,8 +299,39 @@
     }
   },
   "social": {
-    "title": "Feed de Instagram",
-    "description": "Últimas publicaciones de cuentas de Instagram del campus"
+    "title": "Social",
+    "description": "Pregunta, comparte y conecta con otros piratas.",
+    "newPost": "Nueva Publicación",
+    "allFlairs": "Todos",
+    "sortNew": "Nuevo",
+    "sortTop": "Top",
+    "noPosts": "¡Aún no hay publicaciones. Sé el primer pirata en iniciar una conversación!",
+    "pendingBadge": "Pendiente de revisión",
+    "commentCount": "{count, plural, one {# comentario} other {# comentarios}}",
+    "commentsTitle": "Comentarios ({count})",
+    "commentPlaceholder": "Comparte tu opinión...",
+    "replyPlaceholder": "Escribe una respuesta...",
+    "comment": "Comentar",
+    "reply": "Responder",
+    "cancel": "Cancelar",
+    "noComments": "¡Aún no hay comentarios. Inicia la conversación!",
+    "signInToComment": "Inicia sesión para unirte a la conversación.",
+    "signIn": "Iniciar Sesión",
+    "backToBoard": "Volver al tablón",
+    "edit": "Editar",
+    "deleteCommentConfirm": "¿Eliminar este comentario? Sus respuestas también se eliminarán.",
+    "errors": {
+      "commenting": "Error al publicar el comentario:",
+      "deletingComment": "Error al eliminar el comentario:"
+    },
+    "flairs": {
+      "General": "General",
+      "Class": "Clases",
+      "Clubs": "Clubes",
+      "Events": "Eventos",
+      "Announcements": "Anuncios",
+      "Help": "Ayuda"
+    }
   },
   "language": {
     "switchTo": "English"
@@ -320,13 +353,17 @@
     }
   },
   "moderation": {
-    "title": "Cola de Moderación de Eventos",
+    "title": "Cola de Moderación",
+    "eventsSection": "Eventos",
+    "postsSection": "Publicaciones",
     "noEvents": "No hay eventos pendientes de revisión.",
+    "noPosts": "No hay publicaciones pendientes de revisión.",
     "by": "Por",
     "at": "en",
     "approve": "Aprobar",
     "reject": "Rechazar",
-    "unknownOrganizer": "Desconocido"
+    "unknownOrganizer": "Desconocido",
+    "viewPost": "Ver publicación"
   },
   "eventForm": {
     "editTitle": "Editar Evento",
@@ -465,5 +502,52 @@
     "title": "Esta página no existe 💀",
     "subtitle": "Ups, tomaste un giro equivocado. Esta página está totalmente perdida 🚧",
     "home": "Llévame al inicio"
+  },
+  "postForm": {
+    "createTitle": "Crear una Publicación",
+    "editTitle": "Editar Publicación",
+    "createDescription": "Comparte algo con la comunidad del campus",
+    "editDescription": "Actualiza tu publicación a continuación",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Dale a tu publicación un título claro...",
+    "flairLabel": "Etiqueta",
+    "bodyLabel": "Contenido",
+    "bodyPlaceholder": "Escribe tu publicación… usa la barra de herramientas para formato, enlaces e imágenes.",
+    "attachmentsLabel": "Archivos adjuntos",
+    "attachmentsHint": "(opcional — imágenes, PDF o Word · máx. 5 archivos · 10 MB cada uno)",
+    "addAttachment": "Adjuntar un archivo",
+    "removeAttachment": "Quitar",
+    "uploading": "Subiendo…",
+    "createButton": "Publicar",
+    "saveChanges": "Guardar Cambios",
+    "deleteButton": "Eliminar Publicación",
+    "deleting": "Eliminando…",
+    "deleteConfirm": "¿Seguro que quieres eliminar esta publicación? Esto no se puede deshacer.",
+    "pendingNotice": "Tu publicación fue marcada para revisión y será visible para todos cuando un moderador la apruebe.",
+    "reviewNotice": "Las publicaciones están sujetas a moderación comunitaria",
+    "linkPrompt": "Introduce una URL",
+    "toolbar": {
+      "bold": "Negrita",
+      "italic": "Cursiva",
+      "strike": "Tachado",
+      "heading": "Encabezado",
+      "subheading": "Subencabezado",
+      "bulletList": "Lista con viñetas",
+      "orderedList": "Lista numerada",
+      "quote": "Cita",
+      "codeBlock": "Bloque de código",
+      "link": "Añadir enlace",
+      "unlink": "Quitar enlace",
+      "image": "Insertar imagen",
+      "undo": "Deshacer",
+      "redo": "Rehacer"
+    },
+    "errors": {
+      "creating": "Error al enviar la publicación:",
+      "deleting": "Error al eliminar la publicación:",
+      "uploading": "Error al subir el archivo:",
+      "invalidLink": "Los enlaces deben empezar con http://, https:// o mailto:",
+      "tooManyAttachments": "Puedes adjuntar como máximo 5 archivos"
+    }
   }
 }

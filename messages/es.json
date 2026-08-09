@@ -479,6 +479,11 @@
     },
     "profile": {
       "title": "Tu perfil",
+      "changePhoto": "Cambiar foto",
+      "removePhoto": "Quitar",
+      "photoHint": "JPG, PNG, WebP o GIF · hasta 10 MB",
+      "photoUpdated": "¡Foto de perfil actualizada!",
+      "photoRemoved": "Foto de perfil eliminada.",
       "nameLabel": "Nombre completo",
       "saveName": "Guardar nombre",
       "nameUpdated": "¡Nombre actualizado!",

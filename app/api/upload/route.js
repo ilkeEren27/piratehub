@@ -28,8 +28,10 @@ export async function POST(request) {
 
   const formData = await request.formData();
   const file = formData.get("file");
-  // "image" restricts to image types (used by the editor's inline images)
+  // "image" restricts to image types (used by the editor's inline images
+  // and avatars)
   const kind = formData.get("kind") || "any";
+  const folder = formData.get("folder") === "avatars" ? "avatars" : "social";
 
   if (!file || typeof file === "string") {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -56,8 +58,15 @@ export async function POST(request) {
     .replace(/[^a-zA-Z0-9.\-_]/g, "_")
     .slice(-80);
 
+  // Avatars are namespaced by user id so ownership can be verified from the
+  // path alone when we later delete a replaced picture.
+  const key =
+    folder === "avatars"
+      ? `avatars/${user.id}/${nanoid()}-${safeName}`
+      : `social/${nanoid()}-${safeName}`;
+
   try {
-    const blob = await put(`social/${nanoid()}-${safeName}`, file, {
+    const blob = await put(key, file, {
       access: "public",
     });
     return NextResponse.json({

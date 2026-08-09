@@ -43,7 +43,7 @@ export default async function SocialPage({ params, searchParams }) {
         moderationStatus: { not: "Rejected" },
       },
       include: {
-        author: { select: { name: true, role: true } },
+        author: { select: { name: true, role: true, image: true } },
         votes: { select: { value: true, userId: true } },
         _count: { select: { comments: true, attachments: true } },
       },
@@ -60,6 +60,7 @@ export default async function SocialPage({ params, searchParams }) {
       moderationStatus: post.moderationStatus,
       authorName: post.author?.name ?? "Unknown",
       authorRole: post.author?.role ?? "User",
+      authorImage: post.author?.image ?? null,
       timeAgo: timeAgo(post.createdAt, locale),
       score: post.votes.reduce((sum, v) => sum + v.value, 0),
       myVote: user

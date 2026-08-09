@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { LogOut } from "lucide-react";
+import { LogOut, Camera, Trash2, Loader2 } from "lucide-react";
 
 import { authClient, useSession } from "@/lib/auth-client";
+import { deleteAvatarBlobAction } from "@/app/user-profile/_actions";
+import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,12 +31,57 @@ export default function ProfileSettings() {
   const [passwordStatus, setPasswordStatus] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [photoStatus, setPhotoStatus] = useState("");
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const photoInputRef = useRef(null);
 
   if (isPending) return null;
   if (!session?.user) return null;
 
   const user = session.user;
   const roleLabel = user.role ? tRoles(user.role) : tRoles("User");
+
+  const onPickPhoto = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    const previousImage = user.image;
+    setPhotoStatus("");
+    setPhotoBusy(true);
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      fd.set("kind", "image");
+      fd.set("folder", "avatars");
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || t("errors.generic"));
+
+      const { error } = await authClient.updateUser({ image: data.url });
+      if (error) throw new Error(error.message || t("errors.generic"));
+
+      await deleteAvatarBlobAction(previousImage);
+      setPhotoStatus(t("photoUpdated"));
+      router.refresh();
+    } catch (error) {
+      console.error("Avatar upload error:", error);
+      setPhotoStatus(error.message);
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
+
+  const removePhoto = async () => {
+    const previousImage = user.image;
+    setPhotoStatus("");
+    setPhotoBusy(true);
+    const { error } = await authClient.updateUser({ image: null });
+    if (!error) await deleteAvatarBlobAction(previousImage);
+    setPhotoBusy(false);
+    setPhotoStatus(error ? error.message : t("photoRemoved"));
+    router.refresh();
+  };
 
   const updateName = async (e) => {
     e.preventDefault();
@@ -103,6 +150,51 @@ export default function ProfileSettings() {
             {user.email} · {roleLabel}
           </CardDescription>
         </CardHeader>
+        <CardContent className="flex items-center gap-5">
+          <UserAvatar name={user.name} image={user.image} size="lg" />
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={photoBusy}
+                onClick={() => photoInputRef.current?.click()}
+              >
+                {photoBusy ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Camera className="h-4 w-4" />
+                )}
+                {t("changePhoto")}
+              </Button>
+              {user.image && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={photoBusy}
+                  onClick={removePhoto}
+                  className="text-destructive border-destructive/40 hover:bg-destructive hover:text-white"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  {t("removePhoto")}
+                </Button>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">{t("photoHint")}</p>
+            {photoStatus && (
+              <p className="text-sm text-primary">{photoStatus}</p>
+            )}
+          </div>
+          <input
+            ref={photoInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={onPickPhoto}
+          />
+        </CardContent>
         <form onSubmit={updateName}>
           <CardContent className="flex flex-col gap-2">
             <Label htmlFor="name">{t("nameLabel")}</Label>

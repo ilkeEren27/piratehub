@@ -8,6 +8,7 @@ import { timeAgo } from "@/lib/format";
 import FlairBadge from "@/components/social/FlairBadge";
 import VoteButtons from "@/components/social/VoteButtons";
 import CommentSection from "@/components/social/CommentSection";
+import UserAvatar from "@/components/UserAvatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock3, FileText, Pencil, Download } from "lucide-react";
@@ -30,12 +31,14 @@ export default async function PostPage({ params }) {
   const post = await prisma.post.findUnique({
     where: { slug },
     include: {
-      author: { select: { id: true, name: true, role: true } },
+      author: { select: { id: true, name: true, role: true, image: true } },
       attachments: true,
       votes: { select: { value: true, userId: true } },
       comments: {
         include: {
-          author: { select: { id: true, name: true, role: true } },
+          author: {
+            select: { id: true, name: true, role: true, image: true },
+          },
           votes: { select: { value: true, userId: true } },
         },
         orderBy: { createdAt: "asc" },
@@ -65,6 +68,7 @@ export default async function PostPage({ params }) {
         authorId: c.author?.id ?? null,
         authorName: c.author?.name ?? "Unknown",
         authorRole: c.author?.role ?? "User",
+        authorImage: c.author?.image ?? null,
         timeAgo: timeAgo(c.createdAt, locale),
         score: c.votes.reduce((sum, v) => sum + v.value, 0),
         myVote: user
@@ -142,8 +146,15 @@ export default async function PostPage({ params }) {
                     {t("pendingBadge")}
                   </Badge>
                 )}
-                <span className="font-medium text-foreground">
-                  {post.author?.name ?? "Unknown"}
+                <span className="flex items-center gap-1.5">
+                  <UserAvatar
+                    name={post.author?.name ?? "Unknown"}
+                    image={post.author?.image}
+                    size="sm"
+                  />
+                  <span className="font-medium text-foreground">
+                    {post.author?.name ?? "Unknown"}
+                  </span>
                 </span>
                 <Badge variant="secondary">{post.author?.role ?? "User"}</Badge>
                 <span className="flex items-center gap-1">
@@ -214,6 +225,8 @@ export default async function PostPage({ params }) {
             comments={{ tree, total: post.comments.length }}
             currentUser={{
               id: user?.id ?? null,
+              name: user?.name ?? null,
+              image: user?.image ?? null,
               isSignedIn,
               isModerator,
             }}

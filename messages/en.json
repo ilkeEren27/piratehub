@@ -526,6 +526,11 @@
     },
     "profile": {
       "title": "Your profile",
+      "changePhoto": "Change photo",
+      "removePhoto": "Remove",
+      "photoHint": "JPG, PNG, WebP, or GIF · up to 10 MB",
+      "photoUpdated": "Profile picture updated!",
+      "photoRemoved": "Profile picture removed.",
       "nameLabel": "Full name",
       "saveName": "Save name",
       "nameUpdated": "Name updated!",

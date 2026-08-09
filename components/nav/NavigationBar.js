@@ -29,6 +29,7 @@ import {
   Compass,
 } from "lucide-react";
 import { authClient, useSession } from "@/lib/auth-client";
+import UserAvatar from "@/components/UserAvatar";
 import ThemeToggle from "./ThemeToggle";
 import LocaleSwitcher from "./LocaleSwitcher";
 
@@ -48,10 +49,7 @@ export default function NavigationBar() {
     router.refresh();
   };
 
-  const userInitial = (user?.name || user?.email || "?")
-    .trim()
-    .charAt(0)
-    .toUpperCase();
+  const displayName = user?.name || user?.email || "?";
 
   return (
     <div>
@@ -123,12 +121,21 @@ export default function NavigationBar() {
                 </Link>
               )}
               <DropdownMenu>
-                <DropdownMenuTrigger className="h-9 w-9 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30">
-                  {userInitial}
+                <DropdownMenuTrigger className="rounded-full transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/30">
+                  <UserAvatar
+                    name={displayName}
+                    image={user.image}
+                    size="md"
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" sideOffset={8}>
-                  <DropdownMenuLabel className="max-w-48 truncate">
-                    {user.name}
+                  <DropdownMenuLabel className="flex items-center gap-2 max-w-56">
+                    <UserAvatar
+                      name={displayName}
+                      image={user.image}
+                      size="sm"
+                    />
+                    <span className="truncate">{user.name}</span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild className="cursor-pointer">
@@ -261,9 +268,22 @@ export default function NavigationBar() {
 
               {/* User Section */}
               <div className="p-2">
-                <DropdownMenuLabel className="px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
-                  {t("user")}
-                </DropdownMenuLabel>
+                {user ? (
+                  <DropdownMenuLabel className="flex items-center gap-2.5 px-2 py-1.5">
+                    <UserAvatar
+                      name={displayName}
+                      image={user.image}
+                      size="sm"
+                    />
+                    <span className="min-w-0 truncate font-medium">
+                      {user.name}
+                    </span>
+                  </DropdownMenuLabel>
+                ) : (
+                  <DropdownMenuLabel className="px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
+                    {t("user")}
+                  </DropdownMenuLabel>
+                )}
                 {!user ? (
                   <>
                     <DropdownMenuItem

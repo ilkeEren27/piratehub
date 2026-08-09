@@ -8,6 +8,7 @@ import {
   deleteCommentAction,
 } from "@/app/social/_actions";
 import VoteButtons from "@/components/social/VoteButtons";
+import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Reply, Trash2, Loader2 } from "lucide-react";
@@ -103,6 +104,11 @@ function CommentItem({ comment, postId, currentUser, depth }) {
     >
       <div className="py-3 space-y-1.5">
         <div className="flex items-center gap-2 flex-wrap text-sm text-muted-foreground">
+          <UserAvatar
+            name={comment.authorName}
+            image={comment.authorImage}
+            size="xs"
+          />
           <span className="font-medium text-foreground">
             {comment.authorName}
           </span>
@@ -187,7 +193,17 @@ export default function CommentSection({ postId, comments, currentUser }) {
       </h2>
 
       {currentUser.isSignedIn ? (
-        <CommentForm postId={postId} />
+        <div className="flex gap-3">
+          <UserAvatar
+            name={currentUser.name}
+            image={currentUser.image}
+            size="sm"
+            className="mt-2"
+          />
+          <div className="flex-1 min-w-0">
+            <CommentForm postId={postId} />
+          </div>
+        </div>
       ) : (
         <div className="flex items-center justify-between gap-3 px-4 py-3 bg-muted/30 border border-dashed border-border rounded-xl text-sm text-muted-foreground">
           {t("signInToComment")}

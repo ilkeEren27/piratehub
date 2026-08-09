@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import FlairBadge from "@/components/social/FlairBadge";
 import VoteButtons from "@/components/social/VoteButtons";
+import UserAvatar from "@/components/UserAvatar";
 
 export default function PostCard({ post, locale, isSignedIn }) {
   const t = useTranslations("social");
@@ -34,7 +35,16 @@ export default function PostCard({ post, locale, isSignedIn }) {
               {t("pendingBadge")}
             </Badge>
           )}
-          <span className="font-medium text-foreground">{post.authorName}</span>
+          <span className="flex items-center gap-1.5">
+            <UserAvatar
+              name={post.authorName}
+              image={post.authorImage}
+              size="xs"
+            />
+            <span className="font-medium text-foreground">
+              {post.authorName}
+            </span>
+          </span>
           <Badge variant="secondary">{post.authorRole}</Badge>
           <span className="flex items-center gap-1">
             <Clock3 className="w-3.5 h-3.5" />

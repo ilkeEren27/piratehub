@@ -241,7 +241,12 @@
     "showLocation": "Mostrar Ubicación",
     "hostedIn": "El evento se realizará en",
     "postedBy": "Publicado por",
-    "edit": "Editar"
+    "edit": "Editar",
+    "calendarTitle": "Elige una fecha",
+    "allDates": "Todas las fechas",
+    "allEventsCount": "{count, plural, =0 {No hay eventos programados} one {# evento próximo} other {# eventos próximos}}",
+    "eventsOnDay": "{date} · {count, plural, =0 {sin eventos} one {# evento} other {# eventos}}",
+    "noEventsOnDay": "No hay nada este día. Elige otra fecha o mira todos los eventos."
   },
   "campusGuide": {
     "title": "Guía del Campus",
@@ -384,6 +389,13 @@
     "descriptionLabel": "Descripción",
     "optional": "(opcional)",
     "descriptionPlaceholder": "Cuéntanos de qué trata tu evento...",
+    "imageLabel": "Foto / Cartel",
+    "imageHint": "JPG, PNG, WebP o GIF · máx. 10 MB. Sin imagen, los eventos usan el ícono de PirateHub.",
+    "imagePreviewAlt": "Vista previa de la foto del evento",
+    "uploadImage": "Subir imagen",
+    "changeImage": "Cambiar imagen",
+    "removeImage": "Quitar imagen",
+    "uploadingImage": "Subiendo…",
     "saveChanges": "Guardar Cambios",
     "createButton": "Crear Evento",
     "deleteButton": "Eliminar Evento",
@@ -395,7 +407,8 @@
       "endBeforeStart": "La fecha de fin no puede ser anterior a la fecha de inicio",
       "pastStart": "La fecha/hora de inicio no puede ser en el pasado",
       "creating": "Error al crear el evento:",
-      "deleting": "Error al eliminar el evento:"
+      "deleting": "Error al eliminar el evento:",
+      "uploading": "Error al subir la imagen:"
     }
   },
   "auth": {

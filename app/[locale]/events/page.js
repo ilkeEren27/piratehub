@@ -1,7 +1,7 @@
-import EventCard from "@/components/cards/EventCard";
+import EventsBrowser from "@/components/events/EventsBrowser";
 import PageHeader, { PAGE_MARGIN } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
-import { CalendarPlus, CalendarDays } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { places } from "@/data/places";
@@ -11,6 +11,30 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 function getLocationName(locationId) {
   const place = places.find((p) => p.id === locationId);
   return place ? place.name : locationId;
+}
+
+function toDayKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+// Every calendar day an event touches, so the events page calendar can mark
+// multi-day events on each of their days. Capped so a bad end date can't
+// generate an unbounded list.
+function getDayKeys(startsAt, endsAt) {
+  const start = new Date(startsAt);
+  const end = new Date(endsAt);
+  const cursor = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+  const keys = [];
+  while (cursor <= last && keys.length < 366) {
+    keys.push(toDayKey(cursor));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return keys.length ? keys : [toDayKey(cursor)];
 }
 
 function formatEventDate(startsAt, endsAt, allDay, locale) {
@@ -95,6 +119,7 @@ export default async function EventsPage({ params }) {
     location: getLocationName(event.location),
     locationId: event.location,
     date: formatEventDate(event.startsAt, event.endsAt, event.allDay, locale),
+    dayKeys: getDayKeys(event.startsAt, event.endsAt),
     organizer: event.organizer?.name || "Unknown",
     organizerRole: event.organizer?.role ?? "Unknown",
     canEdit:
@@ -113,22 +138,12 @@ export default async function EventsPage({ params }) {
           </Link>
         )}
       </PageHeader>
-      <section
-        className={`grid justify-center mt-10 mb-16 ${PAGE_MARGIN} grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4`}
-      >
-        {transformedEvents.length === 0 ? (
-          <div className="col-span-full flex flex-col items-center gap-4 py-16 rounded-xl border border-dashed bg-card/50 text-center">
-            <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
-              <CalendarDays className="h-7 w-7 text-primary" />
-            </div>
-            <p className="text-lg text-muted-foreground max-w-md px-4">{t("noEvents")}</p>
-          </div>
-        ) : (
-          transformedEvents
-            .toReversed()
-            .map((event) => <EventCard key={event.id} {...event} locale={locale} />)
-        )}
-      </section>
+      <div className={`mt-10 mb-16 ${PAGE_MARGIN}`}>
+        <EventsBrowser
+          events={transformedEvents.toReversed()}
+          locale={locale}
+        />
+      </div>
     </main>
   );
 }

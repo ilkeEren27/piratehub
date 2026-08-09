@@ -4,6 +4,7 @@ import { getSessionUser } from "@/utils/roles";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FLAIRS } from "@/lib/flairs";
 import { timeAgo } from "@/lib/format";
+import { extractFirstImage } from "@/lib/tiptap";
 import PageHeader from "@/components/PageHeader";
 import PostCard from "@/components/social/PostCard";
 import FlairBadge from "@/components/social/FlairBadge";
@@ -56,6 +57,8 @@ export default async function SocialPage({ params, searchParams }) {
       slug: post.slug,
       title: post.title,
       excerpt: post.excerpt,
+      // Reddit-style preview: the first image in the body shows in the feed.
+      image: extractFirstImage(post.contentJson),
       flair: post.flair,
       moderationStatus: post.moderationStatus,
       authorName: post.author?.name ?? "Unknown",

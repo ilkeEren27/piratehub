@@ -241,7 +241,12 @@
     "showLocation": "Show Location",
     "hostedIn": "Event will be hosted in",
     "postedBy": "Posted by",
-    "edit": "Edit"
+    "edit": "Edit",
+    "calendarTitle": "Pick a date",
+    "allDates": "All dates",
+    "allEventsCount": "{count, plural, =0 {No events scheduled} one {# upcoming event} other {# upcoming events}}",
+    "eventsOnDay": "{date} · {count, plural, =0 {no events} one {# event} other {# events}}",
+    "noEventsOnDay": "Nothing is happening on this day. Pick another date or browse all events."
   },
   "campusGuide": {
     "title": "Campus Guide",
@@ -431,6 +436,13 @@
     "descriptionLabel": "Description",
     "optional": "(optional)",
     "descriptionPlaceholder": "Tell people what your event is about...",
+    "imageLabel": "Photo / Poster",
+    "imageHint": "JPG, PNG, WebP or GIF · max 10 MB. Without one, events use the PirateHub icon.",
+    "imagePreviewAlt": "Event photo preview",
+    "uploadImage": "Upload image",
+    "changeImage": "Change image",
+    "removeImage": "Remove image",
+    "uploadingImage": "Uploading…",
     "saveChanges": "Save Changes",
     "createButton": "Create Event",
     "deleteButton": "Delete Event",
@@ -442,7 +454,8 @@
       "endBeforeStart": "End date can't be earlier than start date",
       "pastStart": "Start date/time can't be in the past",
       "creating": "Error creating event:",
-      "deleting": "Error deleting event:"
+      "deleting": "Error deleting event:",
+      "uploading": "Error uploading image:"
     }
   },
   "auth": {

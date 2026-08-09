@@ -20,6 +20,8 @@ const DOCUMENT_TYPES = new Set([
 
 const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
 
+const FOLDERS = new Set(["social", "avatars", "events"]);
+
 export async function POST(request) {
   const user = await getSessionUser();
   if (!user) {
@@ -31,7 +33,8 @@ export async function POST(request) {
   // "image" restricts to image types (used by the editor's inline images
   // and avatars)
   const kind = formData.get("kind") || "any";
-  const folder = formData.get("folder") === "avatars" ? "avatars" : "social";
+  const requestedFolder = String(formData.get("folder") || "social");
+  const folder = FOLDERS.has(requestedFolder) ? requestedFolder : "social";
 
   if (!file || typeof file === "string") {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -63,7 +66,7 @@ export async function POST(request) {
   const key =
     folder === "avatars"
       ? `avatars/${user.id}/${nanoid()}-${safeName}`
-      : `social/${nanoid()}-${safeName}`;
+      : `${folder}/${nanoid()}-${safeName}`;
 
   try {
     const blob = await put(key, file, {

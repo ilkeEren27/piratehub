@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { MessageSquare, Paperclip, Clock3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -60,6 +61,19 @@ export default function PostCard({ post, locale, isSignedIn }) {
           <p className="text-muted-foreground text-sm sm:text-base line-clamp-3">
             {post.excerpt}
           </p>
+        )}
+
+        {/* First image from the body, previewed straight in the timeline */}
+        {post.image && (
+          <div className="relative w-full aspect-video overflow-hidden rounded-xl border border-border/50 bg-muted/20">
+            <Image
+              src={post.image.src}
+              alt={post.image.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 640px"
+            />
+          </div>
         )}
 
         <div className="flex items-center gap-4 pt-1 text-sm text-muted-foreground">

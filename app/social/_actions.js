@@ -6,6 +6,7 @@ import { customAlphabet } from "nanoid";
 import { checkBlocklist, checkOpenAIModeration } from "@/lib/moderation";
 import { isValidFlair } from "@/lib/flairs";
 import { sanitizeDoc, extractText, makeExcerpt } from "@/lib/tiptap";
+import { isTrustedUploadUrl } from "@/lib/uploads";
 
 import slugify from "slugify";
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 8);
@@ -34,6 +35,9 @@ export async function upsertPostAction(formData) {
   if (!contentJson?.type) throw new Error("Post body is required");
   if (!Array.isArray(attachments) || attachments.length > MAX_ATTACHMENTS) {
     throw new Error("Too many attachments");
+  }
+  if (!attachments.every((attachment) => isTrustedUploadUrl(attachment?.url, "social"))) {
+    throw new Error("Invalid attachment");
   }
 
   const bodyText = extractText(contentJson);

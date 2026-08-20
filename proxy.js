@@ -31,7 +31,7 @@ function isPublicRoute(pathname) {
   return PUBLIC_SEGMENTS.has(firstSegment);
 }
 
-export default function middleware(req) {
+export default function proxy(req) {
   const { pathname } = req.nextUrl;
 
   if (!isPublicRoute(pathname)) {

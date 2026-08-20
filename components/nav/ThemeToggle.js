@@ -1,12 +1,33 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { Sun, Moon } from "lucide-react";
 import { Toggle } from "../ui/toggle";
 
+const THEME_CHANGE_EVENT = "piratehub:themechange";
+
+function readTheme() {
+  const stored = localStorage.getItem("theme");
+  const prefersDark =
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return stored ? stored === "dark" : prefersDark;
+}
+
+function subscribeToTheme(callback) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(THEME_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(THEME_CHANGE_EVENT, callback);
+  };
+}
+
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const isDark = useSyncExternalStore(
+    subscribeToTheme,
+    readTheme,
+    () => false
+  );
 
   const applyTheme = useCallback((dark) => {
     const root = document.documentElement;
@@ -17,30 +38,16 @@ export default function ThemeToggle() {
       root.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }, []);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("theme");
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const dark = stored ? stored === "dark" : prefersDark;
-      setIsDark(dark);
-      applyTheme(dark);
-    } catch {
-      setIsDark(false);
-    } finally {
-      setMounted(true);
-    }
-  }, [applyTheme]);
+    applyTheme(isDark);
+  }, [applyTheme, isDark]);
 
   const onPressedChange = (pressed) => {
-    setIsDark(pressed);
     applyTheme(pressed);
   };
-
-  if (!mounted) return null;
 
   return (
     <button

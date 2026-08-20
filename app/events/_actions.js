@@ -4,15 +4,21 @@ import { getSessionUser } from "@/utils/roles";
 import { prisma } from "@/lib/db";
 import { customAlphabet } from "nanoid";
 import { checkBlocklist, checkOpenAIModeration } from "@/lib/moderation";
+import { isTrustedUploadUrl } from "@/lib/uploads";
 
 import slugify from "slugify";
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 8);
+const EVENT_CREATOR_ROLES = new Set(["ClubLeader", "ASWU", "Faculty", "Admin"]);
 
 export async function upsertEventAction(formData) {
   const user = await getSessionUser();
   if (!user) throw new Error("Not signed in");
 
   const id = formData.get("id");
+  if (!id && !EVENT_CREATOR_ROLES.has(user.role)) {
+    throw new Error("You do not have permission to create events");
+  }
+
   const title = String(formData.get("title") || "").trim();
   const description = formData.get("description") || null;
   const detailsJson = formData.get("detailsJson")
@@ -26,6 +32,9 @@ export async function upsertEventAction(formData) {
     formData.get("allDay") === "on" || formData.get("allDay") === "true";
 
   if (!title) throw new Error("Title is required");
+  if (imageUrl && !isTrustedUploadUrl(imageUrl, "events")) {
+    throw new Error("Invalid event image");
+  }
   if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime())) {
     throw new Error("Invalid dates");
   }

@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 export async function GET() {
   try {
     const events = await prisma.event.findMany({
-      where: { published: true },
+      where: { published: true, moderationStatus: "Approved" },
       include: { organizer: { select: { name: true, role: true } } },
       orderBy: { startsAt: "asc" },
     });

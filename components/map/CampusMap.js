@@ -31,7 +31,10 @@ export default function CampusMap() {
   const t = useTranslations("map");
   const [selectedCats, setSelectedCats] = useState(new Set(categories));
   const [logic, setLogic] = useState("ANY");
-  const [activeId, setActiveId] = useState(null);
+  const searchParams = useSearchParams();
+  const [activeId, setActiveId] = useState(
+    () => searchParams?.get("id") ?? null
+  );
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [mapInstance, setMapInstance] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -39,12 +42,6 @@ export default function CampusMap() {
   // 👇 new: user position + accuracy
   const [userPos, setUserPos] = useState(null);
   const [accuracy, setAccuracy] = useState(null);
-
-  const searchParams = useSearchParams();
-  useEffect(() => {
-    const id = searchParams?.get("id");
-    if (id) setActiveId(id);
-  }, [searchParams]);
 
   // Search functionality
   const [searchQuery, setSearchQuery] = useState("");

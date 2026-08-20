@@ -5,6 +5,7 @@ import { getSessionUser } from "@/utils/roles";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { renderPostHtml } from "@/lib/tiptap";
 import { timeAgo } from "@/lib/format";
+import { isTrustedUploadUrl } from "@/lib/uploads";
 import FlairBadge from "@/components/social/FlairBadge";
 import VoteButtons from "@/components/social/VoteButtons";
 import CommentSection from "@/components/social/CommentSection";
@@ -93,10 +94,13 @@ export default async function PostPage({ params }) {
     ? post.votes.find((v) => v.userId === user.id)?.value ?? 0
     : 0;
 
-  const imageAttachments = post.attachments.filter((a) =>
+  const trustedAttachments = post.attachments.filter((a) =>
+    isTrustedUploadUrl(a.url, "social")
+  );
+  const imageAttachments = trustedAttachments.filter((a) =>
     a.mimeType?.startsWith("image/")
   );
-  const fileAttachments = post.attachments.filter(
+  const fileAttachments = trustedAttachments.filter(
     (a) => !a.mimeType?.startsWith("image/")
   );
 

@@ -4,7 +4,9 @@
 // Roles now live only in our own database (Better Auth session reads them
 // from the User table), so there is no external service to keep in sync.
 
-import { checkRole } from "@/utils/roles";
+import { revalidatePath } from "next/cache";
+
+import { checkRole, getSessionUser } from "@/utils/roles";
 import { prisma } from "@/lib/db";
 
 // Normalize an arbitrary role value into a known enum value
@@ -60,6 +62,34 @@ export async function removeRole(formData) {
     return { message: "Role reset to User." };
   } catch (err) {
     console.error("Error resetting role:", err);
+    return { message: String(err) };
+  }
+}
+
+// Action: permanently delete a user (Admin-only)
+// Prisma cascades remove the user's sessions, accounts, posts, comments and
+// votes; events they organized are kept with a null organizer.
+export async function deleteUser(formData) {
+  const sessionUser = await getSessionUser();
+  if (sessionUser?.role !== "Admin") {
+    return { message: "Not Authorized" };
+  }
+
+  try {
+    const userId = formData.get("id");
+
+    // An admin must not delete their own account out from under themselves.
+    if (userId === sessionUser.id) {
+      return { message: "You cannot delete your own account." };
+    }
+
+    const deleted = await prisma.user.delete({ where: { id: userId } });
+
+    revalidatePath("/[locale]/admin", "page");
+
+    return { message: `Deleted ${deleted.email}.` };
+  } catch (err) {
+    console.error("Error deleting user:", err);
     return { message: String(err) };
   }
 }

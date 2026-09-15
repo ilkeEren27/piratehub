@@ -395,6 +395,12 @@
     "role": "Role",
     "setRole": "Set Role",
     "moderationQueue": "Moderation Queue",
+    "deleteUser": "Delete User",
+    "deleteUserTitle": "Delete this user?",
+    "deleteUserDescription": "This permanently deletes {name} along with all of their posts, comments and votes. This cannot be undone.",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete",
+    "deleting": "Deleting...",
     "roles": {
       "User": "User",
       "ClubLeader": "Club Leader",

@@ -348,6 +348,12 @@
     "role": "Rol",
     "setRole": "Asignar Rol",
     "moderationQueue": "Cola de Moderación",
+    "deleteUser": "Eliminar Usuario",
+    "deleteUserTitle": "¿Eliminar este usuario?",
+    "deleteUserDescription": "Esto elimina permanentemente a {name} junto con todas sus publicaciones, comentarios y votos. Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "confirmDelete": "Eliminar",
+    "deleting": "Eliminando...",
     "roles": {
       "User": "Usuario",
       "ClubLeader": "Líder de Club",

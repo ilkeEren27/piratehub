@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { checkRole } from "@/utils/roles";
+import { getSessionUser } from "@/utils/roles";
 import { SearchUsers } from "@/components/admin/SearchUsers";
+import { DeleteUserButton } from "@/components/admin/DeleteUserButton";
 import { prisma } from "@/lib/db";
-import { setRole } from "./_actions";
+import { setRole, deleteUser } from "./_actions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -43,7 +44,8 @@ export default async function AdminDashboard({ searchParams, params }) {
   const t = await getTranslations("admin");
 
   // Guard: only admins
-  if (!(await checkRole("Admin"))) {
+  const sessionUser = await getSessionUser();
+  if (sessionUser?.role !== "Admin") {
     redirect(`/${locale}`);
   }
 
@@ -80,6 +82,16 @@ export default async function AdminDashboard({ searchParams, params }) {
         const roleLabel = t.has(`roles.${currentRole}`)
           ? t(`roles.${currentRole}`)
           : currentRole;
+        // Admins can delete anyone but themselves.
+        const canDelete = user.id !== sessionUser.id;
+        const deleteLabels = {
+          trigger: t("deleteUser"),
+          title: t("deleteUserTitle"),
+          description: t("deleteUserDescription", { name: user.name }),
+          cancel: t("cancel"),
+          confirm: t("confirmDelete"),
+          pending: t("deleting"),
+        };
 
         return (
           <div key={user.id}>
@@ -126,6 +138,14 @@ export default async function AdminDashboard({ searchParams, params }) {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
+                {canDelete && (
+                  <DeleteUserButton
+                    userId={user.id}
+                    action={deleteUser}
+                    triggerClassName="w-40 h-8"
+                    labels={deleteLabels}
+                  />
+                )}
               </div>
             </div>
             {/* Mobile*/}
@@ -170,6 +190,14 @@ export default async function AdminDashboard({ searchParams, params }) {
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
+                {canDelete && (
+                  <DeleteUserButton
+                    userId={user.id}
+                    action={deleteUser}
+                    triggerClassName="w-88 h-8"
+                    labels={deleteLabels}
+                  />
+                )}
               </div>
             </div>
           </div>

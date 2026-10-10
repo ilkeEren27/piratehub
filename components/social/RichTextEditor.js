@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadFile } from "@/lib/uploadClient";
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -98,12 +99,7 @@ export default function RichTextEditor({ initialContent, onChange }) {
 
     setUploadingImage(true);
     try {
-      const fd = new FormData();
-      fd.set("file", file);
-      fd.set("kind", "image");
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+      const data = await uploadFile(file, { kind: "image" });
       editor.chain().focus().setImage({ src: data.url, alt: file.name }).run();
     } catch (error) {
       console.error("Image upload error:", error);

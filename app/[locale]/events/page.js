@@ -7,82 +7,43 @@ import { prisma } from "@/lib/db";
 import { places } from "@/data/places";
 import { getSessionUser } from "@/utils/roles";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CAMPUS_TIME_ZONE, campusDayKey, campusDayKeys, daysAgo } from "@/lib/time";
 
 function getLocationName(locationId) {
   const place = places.find((p) => p.id === locationId);
   return place ? place.name : locationId;
 }
 
-function toDayKey(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(date.getDate()).padStart(2, "0")}`;
-}
-
-// Every calendar day an event touches, so the events page calendar can mark
-// multi-day events on each of their days. Capped so a bad end date can't
-// generate an unbounded list.
-function getDayKeys(startsAt, endsAt) {
-  const start = new Date(startsAt);
-  const end = new Date(endsAt);
-  const cursor = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-
-  const keys = [];
-  while (cursor <= last && keys.length < 366) {
-    keys.push(toDayKey(cursor));
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  return keys.length ? keys : [toDayKey(cursor)];
-}
-
+// Dates are formatted in the campus time zone so they read the same on the
+// server (UTC on Vercel) and for every visitor.
 function formatEventDate(startsAt, endsAt, allDay, locale) {
   const startDate = new Date(startsAt);
   const endDate = new Date(endsAt);
-  
-  const localeCode = locale === 'es' ? 'es-ES' : 'en-US';
+  const localeCode = locale === "es" ? "es-ES" : "en-US";
 
-  const options = {
-    month: "long",
-    day: "numeric",
-    hour: allDay ? undefined : "numeric",
-    minute: allDay ? undefined : "2-digit",
-    hour12: true,
-  };
+  const dayOf = (date) =>
+    date.toLocaleDateString(localeCode, {
+      month: "long",
+      day: "numeric",
+      timeZone: CAMPUS_TIME_ZONE,
+    });
+  const timeOf = (date) =>
+    date.toLocaleTimeString(localeCode, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: CAMPUS_TIME_ZONE,
+    });
+
+  const sameDay = campusDayKey(startDate) === campusDayKey(endDate);
 
   if (allDay) {
-    return startDate.toLocaleDateString(localeCode, {
-      month: "long",
-      day: "numeric",
-    });
+    return sameDay ? dayOf(startDate) : `${dayOf(startDate)} - ${dayOf(endDate)}`;
   }
-
-  const startTime = startDate.toLocaleTimeString(localeCode, {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  if (startDate.toDateString() === endDate.toDateString()) {
-    return `${startDate.toLocaleDateString(localeCode, {
-      month: "long",
-      day: "numeric",
-    })} ${startTime}`;
+  if (sameDay) {
+    return `${dayOf(startDate)} ${timeOf(startDate)}`;
   }
-
-  const endTime = endDate.toLocaleTimeString(localeCode, {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-  return `${startDate.toLocaleDateString(localeCode, {
-    month: "long",
-    day: "numeric",
-  })} ${startTime} - ${endDate.toLocaleDateString(localeCode, {
-    month: "long",
-    day: "numeric",
-  })} ${endTime}`;
+  return `${dayOf(startDate)} ${timeOf(startDate)} - ${dayOf(endDate)} ${timeOf(endDate)}`;
 }
 
 export default async function EventsPage({ params }) {
@@ -101,7 +62,12 @@ export default async function EventsPage({ params }) {
   let events = [];
   try {
     events = await prisma.event.findMany({
-      where: { published: true, moderationStatus: "Approved" },
+      where: {
+        published: true,
+        moderationStatus: "Approved",
+        // Coarse cut here; the exact "ended before today" check is below.
+        endsAt: { gte: daysAgo(2) },
+      },
       include: { organizer: { select: { name: true, role: true } } },
       orderBy: { startsAt: "asc" },
     });
@@ -110,7 +76,13 @@ export default async function EventsPage({ params }) {
     events = [];
   }
 
-  const transformedEvents = events.map((event) => ({
+  // Events that ended before today (campus time) are hidden.
+  const todayKey = campusDayKey(new Date());
+  const upcomingEvents = events.filter(
+    (event) => campusDayKey(event.endsAt) >= todayKey
+  );
+
+  const transformedEvents = upcomingEvents.map((event) => ({
     id: event.id,
     slug: event.slug,
     title: event.title,
@@ -119,7 +91,7 @@ export default async function EventsPage({ params }) {
     location: getLocationName(event.location),
     locationId: event.location,
     date: formatEventDate(event.startsAt, event.endsAt, event.allDay, locale),
-    dayKeys: getDayKeys(event.startsAt, event.endsAt),
+    dayKeys: campusDayKeys(event.startsAt, event.endsAt),
     organizer: event.organizer?.name || "Unknown",
     organizerRole: event.organizer?.role ?? "Unknown",
     canEdit:
@@ -140,7 +112,7 @@ export default async function EventsPage({ params }) {
       </PageHeader>
       <div className={`mt-10 mb-16 ${PAGE_MARGIN}`}>
         <EventsBrowser
-          events={transformedEvents.toReversed()}
+          events={transformedEvents}
           locale={locale}
         />
       </div>

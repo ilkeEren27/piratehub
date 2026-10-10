@@ -18,6 +18,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+// Error codes from lib/auth.js that have their own translated message.
+const SERVER_ERRORS = [
+  "TERMS_NOT_ACCEPTED",
+  "EMAIL_DOMAIN_NOT_ALLOWED",
+  "INVALID_NAME",
+  "NAME_TOO_LONG",
+  "INAPPROPRIATE_NAME",
+];
+
 export default function SignUpForm() {
   const t = useTranslations("auth.signUp");
   const locale = useLocale();
@@ -35,6 +44,7 @@ export default function SignUpForm() {
     const email = String(form.get("email") || "").trim();
     const password = String(form.get("password") || "");
     const confirmPassword = String(form.get("confirmPassword") || "");
+    const acceptTerms = form.get("acceptTerms") === "on";
 
     if (password !== confirmPassword) {
       setError(t("errors.passwordMismatch"));
@@ -46,6 +56,7 @@ export default function SignUpForm() {
       name,
       email,
       password,
+      acceptTerms,
       callbackURL: `/${locale}/verify-email`,
     });
     setLoading(false);
@@ -53,6 +64,8 @@ export default function SignUpForm() {
     if (signUpError) {
       if (signUpError.code === "USER_ALREADY_EXISTS") {
         setError(t("errors.emailTaken"));
+      } else if (SERVER_ERRORS.includes(signUpError.code)) {
+        setError(t(`errors.${signUpError.code}`));
       } else {
         setError(signUpError.message || t("errors.generic"));
       }
@@ -79,7 +92,7 @@ export default function SignUpForm() {
               type="text"
               autoComplete="name"
               required
-              maxLength={100}
+              maxLength={50}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -115,6 +128,36 @@ export default function SignUpForm() {
               minLength={8}
             />
           </div>
+          <label className="flex items-start gap-2 text-sm cursor-pointer select-none">
+            <input
+              type="checkbox"
+              name="acceptTerms"
+              required
+              className="w-4 h-4 mt-0.5 accent-primary shrink-0"
+            />
+            <span>
+              {t.rich("acceptTerms", {
+                terms: (chunks) => (
+                  <Link
+                    href={`/${locale}/terms`}
+                    target="_blank"
+                    className="text-primary underline underline-offset-2"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+                privacy: (chunks) => (
+                  <Link
+                    href={`/${locale}/privacy`}
+                    target="_blank"
+                    className="text-primary underline underline-offset-2"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </span>
+          </label>
           {error && <p className="text-sm text-destructive">{error}</p>}
         </CardContent>
         <CardFooter className="flex flex-col gap-4 mt-6">

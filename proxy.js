@@ -6,35 +6,26 @@ import { routing } from "./i18n/routing";
 // Create next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-// First path segment (after the locale) of all *public* routes (no auth required)
-const PUBLIC_SEGMENTS = new Set([
-  "map",
-  "events", // Allow all events routes including editor
-  "campus-guide", // Campus guide pages
-  "social", // Social/Instagram feed pages
-  "log-in",
-  "sign-up",
-  "forgot-password",
-  "reset-password",
-  "verify-email",
-]);
+// First path segment (after the locale) of the routes that need a signed-in
+// user. Everything else is public, and unknown paths fall through to the
+// 404 page. Editors and server actions check the session themselves.
+const PROTECTED_SEGMENTS = new Set(["admin", "user-profile"]);
 
 const localePattern = new RegExp(`^/(${routing.locales.join("|")})(/.*)?$`);
 
-function isPublicRoute(pathname) {
-  // Strip the locale prefix if present, e.g. "/en/map/x" -> "/map/x"
+function isProtectedRoute(pathname) {
+  // Strip the locale prefix if present, e.g. "/en/admin/x" -> "/admin/x"
   const match = pathname.match(localePattern);
   const path = match ? match[2] || "/" : pathname;
 
-  if (path === "/") return true;
   const firstSegment = path.split("/")[1];
-  return PUBLIC_SEGMENTS.has(firstSegment);
+  return PROTECTED_SEGMENTS.has(firstSegment);
 }
 
 export default function proxy(req) {
   const { pathname } = req.nextUrl;
 
-  if (!isPublicRoute(pathname)) {
+  if (isProtectedRoute(pathname)) {
     // Optimistic check: only verifies the session cookie exists. Pages and
     // server actions still validate the session against the DB themselves.
     const sessionCookie = getSessionCookie(req);

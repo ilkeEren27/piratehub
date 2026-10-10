@@ -1,9 +1,10 @@
 "use client";
 
+import { uploadFile } from "@/lib/uploadClient";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { LogOut, Camera, Trash2, Loader2 } from "lucide-react";
+import { LogOut, Camera, Trash2, Loader2, UserX } from "lucide-react";
 
 import { authClient, useSession } from "@/lib/auth-client";
 import { deleteAvatarBlobAction } from "@/app/user-profile/_actions";
@@ -19,6 +20,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+// Error codes from lib/auth.js that have their own translated message.
+const NAME_ERRORS = ["INVALID_NAME", "NAME_TOO_LONG", "INAPPROPRIATE_NAME"];
 
 export default function ProfileSettings() {
   const t = useTranslations("auth.profile");
@@ -34,6 +47,9 @@ export default function ProfileSettings() {
   const [photoStatus, setPhotoStatus] = useState("");
   const [photoBusy, setPhotoBusy] = useState(false);
   const photoInputRef = useRef(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   if (isPending) return null;
   if (!session?.user) return null;
@@ -50,13 +66,7 @@ export default function ProfileSettings() {
     setPhotoStatus("");
     setPhotoBusy(true);
     try {
-      const fd = new FormData();
-      fd.set("file", file);
-      fd.set("kind", "image");
-      fd.set("folder", "avatars");
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || t("errors.generic"));
+      const data = await uploadFile(file, { kind: "image", folder: "avatars" });
 
       const { error } = await authClient.updateUser({ image: data.url });
       if (error) throw new Error(error.message || t("errors.generic"));
@@ -93,7 +103,13 @@ export default function ProfileSettings() {
     setLoading(true);
     const { error } = await authClient.updateUser({ name });
     setLoading(false);
-    setNameStatus(error ? error.message : t("nameUpdated"));
+    setNameStatus(
+      !error
+        ? t("nameUpdated")
+        : NAME_ERRORS.includes(error.code)
+          ? t(`errors.${error.code}`)
+          : error.message
+    );
     router.refresh();
   };
 
@@ -132,6 +148,26 @@ export default function ProfileSettings() {
 
     formEl.reset();
     setPasswordStatus(t("passwordChanged"));
+  };
+
+  const deleteAccount = async (e) => {
+    e.preventDefault();
+    setDeleteError("");
+    const password = String(new FormData(e.currentTarget).get("password") || "");
+
+    setDeleting(true);
+    const { error } = await authClient.deleteUser({ password });
+    if (error) {
+      setDeleting(false);
+      setDeleteError(
+        error.code === "INVALID_PASSWORD"
+          ? t("errors.wrongPassword")
+          : error.message || t("errors.generic")
+      );
+      return;
+    }
+    router.push(`/${locale}`);
+    router.refresh();
   };
 
   const handleSignOut = async () => {
@@ -204,7 +240,7 @@ export default function ProfileSettings() {
               type="text"
               defaultValue={user.name}
               required
-              maxLength={100}
+              maxLength={50}
             />
             {nameStatus && <p className="text-sm text-primary">{nameStatus}</p>}
           </CardContent>
@@ -269,6 +305,64 @@ export default function ProfileSettings() {
             </Button>
           </CardFooter>
         </form>
+      </Card>
+
+      {/* Delete account */}
+      <Card className="border-destructive/30">
+        <CardHeader>
+          <CardTitle>{t("deleteAccountTitle")}</CardTitle>
+          <CardDescription>{t("deleteAccountSubtitle")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Dialog
+            open={deleteOpen}
+            onOpenChange={(open) => {
+              setDeleteOpen(open);
+              if (!open) setDeleteError("");
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button variant="destructive">
+                <UserX className="h-4 w-4" />
+                {t("deleteAccount")}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("deleteAccountConfirmTitle")}</DialogTitle>
+                <DialogDescription>{t("deleteAccountConfirmText")}</DialogDescription>
+              </DialogHeader>
+              <form onSubmit={deleteAccount} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="deletePassword">{t("currentPassword")}</Label>
+                  <Input
+                    id="deletePassword"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                  />
+                </div>
+                {deleteError && (
+                  <p className="text-sm text-destructive">{deleteError}</p>
+                )}
+                <DialogFooter className="gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setDeleteOpen(false)}
+                  >
+                    {t("cancel")}
+                  </Button>
+                  <Button type="submit" variant="destructive" disabled={deleting}>
+                    {deleting && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {t("deleteAccountConfirm")}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </CardContent>
       </Card>
 
       {/* Sign out */}

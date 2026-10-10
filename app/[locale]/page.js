@@ -3,13 +3,14 @@ import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Map, CalendarDays, Compass, Users, ArrowRight } from "lucide-react";
+import { Map, CalendarDays, Compass, Users, Store, ArrowRight } from "lucide-react";
 
 const features = [
   { key: "map", href: "/map", Icon: Map },
   { key: "events", href: "/events", Icon: CalendarDays },
   { key: "guide", href: "/campus-guide", Icon: Compass },
   { key: "social", href: "/social", Icon: Users },
+  { key: "marketplace", href: "/marketplace", Icon: Store },
 ];
 
 export default function Home() {
@@ -51,7 +52,7 @@ export default function Home() {
       </section>
 
       {/* Feature cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto px-4 my-20 md:my-28">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-6xl mx-auto px-4 my-20 md:my-28">
         {features.map(({ key, href, Icon }) => (
           <Link
             key={key}

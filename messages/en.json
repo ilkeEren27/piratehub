@@ -15,11 +15,13 @@
     "menu": "Menu",
     "profile": "Profile",
     "campusGuide": "Campus Guide",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "marketplace": "Marketplace",
+    "moderation": "Moderation"
   },
   "home": {
     "welcome": "Welcome to PirateHub!",
-    "description": "I've started building this campus-life app for pirates with one main goal: create a digital campus community, a platform where pirates can connect with each other, discover events, and navigate campus with ease.",
+    "description": "I'm a current Whitworth University student, and I've started building this campus-life app for pirates with one main goal: create a digital campus community, a platform where pirates can connect with each other, discover events, and navigate campus with ease. It's an unofficial, just-for-fun project — not affiliated with the university.",
     "exploreMap": "Explore the Map",
     "browseEvents": "Browse Events",
     "features": {
@@ -38,12 +40,21 @@
       "social": {
         "title": "Social",
         "desc": "Ask questions, share posts, and vote on what matters to pirates."
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "desc": "List textbooks, furniture, and more for fellow pirates. Deals happen directly between you."
       }
     }
   },
   "footer": {
     "madeBy": "Made by",
-    "with": "with"
+    "with": "with",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "copyright": "Copyright Policy",
+    "marketplaceTerms": "Marketplace Terms",
+    "disclaimer": "PirateHub is an unofficial community site made by a Whitworth University student. It is not affiliated with, endorsed by, or operated by Whitworth University."
   },
   "map": {
     "title": "Campus Map",
@@ -336,7 +347,10 @@
       "Events": "Events",
       "Announcements": "Announcements",
       "Help": "Help"
-    }
+    },
+    "commentPendingNotice": "Your comment was flagged for review and will appear for everyone once a moderator approves it.",
+    "commentRemovedBadge": "Removed",
+    "hiddenComment": "This comment is hidden."
   },
   "postForm": {
     "createTitle": "Create a Post",
@@ -349,7 +363,7 @@
     "bodyLabel": "Body",
     "bodyPlaceholder": "Write your post… use the toolbar for formatting, links, and images.",
     "attachmentsLabel": "Attachments",
-    "attachmentsHint": "(optional — images, PDF, or Word · max 5 files · 10 MB each)",
+    "attachmentsHint": "(optional — images, PDF, or Word · max 5 files · 4 MB each)",
     "addAttachment": "Attach a file",
     "removeAttachment": "Remove",
     "uploading": "Uploading…",
@@ -408,7 +422,9 @@
       "Moderator": "Moderator",
       "Faculty": "Faculty",
       "Admin": "Admin"
-    }
+    },
+    "searchUsers": "Search for users",
+    "search": "Search"
   },
   "moderation": {
     "title": "Moderation Queue",
@@ -421,7 +437,22 @@
     "approve": "Approve",
     "reject": "Reject",
     "unknownOrganizer": "Unknown",
-    "viewPost": "View post"
+    "viewPost": "View post",
+    "listingsSection": "Listings",
+    "noListings": "No listings pending review.",
+    "reportedSection": "Reported listings",
+    "noReported": "No reported listings.",
+    "viewListing": "View listing",
+    "reportCount": "{count, plural, one {# report} other {# reports}}",
+    "keep": "Keep",
+    "remove": "Remove",
+    "reportedPostsSection": "Reported posts",
+    "noReportedPosts": "No reported posts.",
+    "commentsSection": "Comments",
+    "noComments": "No comments pending review.",
+    "reportedCommentsSection": "Reported comments",
+    "noReportedComments": "No reported comments.",
+    "onPost": "On:"
   },
   "eventForm": {
     "editTitle": "Edit Event",
@@ -443,7 +474,7 @@
     "optional": "(optional)",
     "descriptionPlaceholder": "Tell people what your event is about...",
     "imageLabel": "Photo / Poster",
-    "imageHint": "JPG, PNG, WebP or GIF · max 10 MB. Without one, events use the PirateHub icon.",
+    "imageHint": "JPG, PNG, WebP or GIF · max 4 MB. Without one, events use the PirateHub icon.",
     "imagePreviewAlt": "Event photo preview",
     "uploadImage": "Upload image",
     "changeImage": "Change image",
@@ -462,7 +493,8 @@
       "creating": "Error creating event:",
       "deleting": "Error deleting event:",
       "uploading": "Error uploading image:"
-    }
+    },
+    "pendingNotice": "Your event was flagged for review and will appear for everyone once a moderator approves it."
   },
   "auth": {
     "signUp": {
@@ -480,8 +512,14 @@
       "errors": {
         "passwordMismatch": "Passwords don't match",
         "emailTaken": "An account with this email already exists",
-        "generic": "Something went wrong. Please try again."
-      }
+        "generic": "Something went wrong. Please try again.",
+        "TERMS_NOT_ACCEPTED": "Please accept the Terms of Service and Privacy Policy.",
+        "EMAIL_DOMAIN_NOT_ALLOWED": "Sign-up is limited to campus email addresses.",
+        "INVALID_NAME": "Please enter your name.",
+        "NAME_TOO_LONG": "Your name can be at most 50 characters.",
+        "INAPPROPRIATE_NAME": "That name contains inappropriate language."
+      },
+      "acceptTerms": "I am at least 13 years old and agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
     },
     "logIn": {
       "title": "Welcome back",
@@ -547,7 +585,7 @@
       "title": "Your profile",
       "changePhoto": "Change photo",
       "removePhoto": "Remove",
-      "photoHint": "JPG, PNG, WebP, or GIF · up to 10 MB",
+      "photoHint": "JPG, PNG, WebP, or GIF · up to 4 MB",
       "photoUpdated": "Profile picture updated!",
       "photoRemoved": "Profile picture removed.",
       "nameLabel": "Full name",
@@ -565,13 +603,387 @@
       "errors": {
         "mismatch": "Passwords don't match",
         "wrongPassword": "Current password is incorrect",
-        "generic": "Something went wrong. Please try again."
-      }
+        "generic": "Something went wrong. Please try again.",
+        "INVALID_NAME": "Please enter your name.",
+        "NAME_TOO_LONG": "Your name can be at most 50 characters.",
+        "INAPPROPRIATE_NAME": "That name contains inappropriate language."
+      },
+      "deleteAccountTitle": "Delete account",
+      "deleteAccountSubtitle": "Permanently delete your account, posts, comments, votes, listings, and uploaded files. Events you organized stay up without your name.",
+      "deleteAccount": "Delete my account",
+      "deleteAccountConfirmTitle": "Delete your account?",
+      "deleteAccountConfirmText": "This cannot be undone. Enter your password to confirm.",
+      "deleteAccountConfirm": "Delete forever",
+      "cancel": "Cancel"
     }
   },
   "notFound": {
     "title": "This page doesn’t exist 💀",
     "subtitle": "Oops, you took a wrong turn. This page is totally lost 🚧",
     "home": "Take me home"
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "description": "Buy, sell, and swap with fellow pirates",
+    "sellItem": "Sell an Item",
+    "notice": "PirateHub only displays listings. All sales, payments, and exchanges happen directly between pirates, outside this site. PirateHub is not a party to any sale and does not verify items, sellers, or buyers.",
+    "readTerms": "Read the marketplace terms",
+    "searchPlaceholder": "Search listings…",
+    "searchButton": "Search",
+    "sortLabel": "Sort by",
+    "sortNew": "Newest",
+    "sortPriceLow": "Price: low to high",
+    "sortPriceHigh": "Price: high to low",
+    "allCategories": "All",
+    "myListings": "My listings",
+    "noListings": "No listings yet. Be the first to sell something!",
+    "noResults": "No listings match your search.",
+    "noPhotos": "No photos",
+    "showMedia": "Show photo {number}",
+    "free": "Free",
+    "obo": "OBO",
+    "negotiable": "or best offer",
+    "soldBadge": "Sold",
+    "pendingBadge": "Pending review",
+    "backToMarketplace": "Back to marketplace",
+    "edit": "Edit",
+    "markSold": "Mark as sold",
+    "markAvailable": "Mark as available",
+    "contactSeller": "Contact the seller",
+    "contactNote": "Reach out to the seller directly. PirateHub does not handle messages, payments, or delivery for this listing.",
+    "logInToContact": "Log in to see contact info",
+    "descriptionHeading": "Description",
+    "safetyTitle": "Stay safe",
+    "safety": {
+      "meet": "Meet in a busy, public place on campus during the day.",
+      "inspect": "Inspect the item before you pay.",
+      "payment": "Never pay in advance, send gift cards, or share banking details.",
+      "personal": "Don't share more personal information than you need to.",
+      "report": "Report listings that look like scams or break the rules."
+    },
+    "categories": {
+      "Textbooks": "Textbooks",
+      "Electronics": "Electronics",
+      "Furniture": "Furniture",
+      "Clothing": "Clothing",
+      "Tickets": "Tickets",
+      "Services": "Services",
+      "Other": "Other"
+    },
+    "conditions": {
+      "New": "New",
+      "LikeNew": "Like new",
+      "Good": "Good",
+      "Fair": "Fair",
+      "Poor": "Poor"
+    }
+  },
+  "listingForm": {
+    "createTitle": "Sell an Item",
+    "editTitle": "Edit Listing",
+    "createDescription": "List something for fellow pirates. You handle the sale yourself.",
+    "editDescription": "Update your listing below",
+    "titleLabel": "Title",
+    "titlePlaceholder": "What are you selling?",
+    "priceLabel": "Price",
+    "priceHint": "(USD · enter 0 if it's free)",
+    "negotiableLabel": "Open to offers",
+    "categoryLabel": "Category",
+    "conditionLabel": "Condition",
+    "conditionNone": "Not specified",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe the item: details, size, any flaws, and where to pick it up…",
+    "contactLabel": "How should buyers contact you?",
+    "contactPlaceholder": "e.g. your email, phone number, or Instagram handle",
+    "contactHint": "Only signed-in pirates can see this.",
+    "mediaLabel": "Photos & videos",
+    "mediaHint": "(up to {max} files · images 4 MB, videos 50 MB · max {maxVideos} videos)",
+    "addMedia": "Add photos or videos",
+    "removeMedia": "Remove",
+    "cover": "Cover",
+    "uploading": "Uploading…",
+    "termsSummary": "PirateHub only displays your listing. You are fully responsible for the item, the sale, payment, and the exchange. PirateHub is not involved in and not responsible for any transaction.",
+    "acceptTerms": "I agree to the <terms>marketplace terms</terms> and confirm this item is legal to sell, mine to sell, and accurately described.",
+    "createButton": "Post Listing",
+    "saveChanges": "Save Changes",
+    "deleteButton": "Delete Listing",
+    "deleting": "Deleting…",
+    "deleteConfirm": "Are you sure you want to delete this listing? This cannot be undone.",
+    "pendingNotice": "Your listing was flagged for review and will be visible to everyone once a moderator approves it.",
+    "reviewNotice": "Listings are subject to community moderation",
+    "errors": {
+      "saving": "Error saving listing:",
+      "deleting": "Error deleting listing:",
+      "uploading": "Error uploading file:",
+      "tooManyMedia": "You can add at most {max} photos or videos",
+      "tooManyVideos": "You can add at most {max} videos",
+      "unsupportedType": "{name} isn't a supported image or video type",
+      "videoTooLarge": "{name} is larger than 50 MB"
+    }
+  },
+  "marketplaceTerms": {
+    "title": "Marketplace Terms & Safety",
+    "updated": "Last updated: October 9, 2026",
+    "summary": "PirateHub is a bulletin board, not a store. We display listings; we don't sell, buy, hold money, ship, or guarantee anything. Every deal is strictly between the buyer and the seller.",
+    "sections": {
+      "platform": {
+        "heading": "PirateHub only hosts listings",
+        "body": "The marketplace lets pirates post listings so others can see what they offer. PirateHub is not a seller, buyer, broker, agent, or auctioneer, and is not a party to any agreement between users. We do not inspect, verify, endorse, or guarantee any item, service, price, user, or listing, and we make no representations about their quality, safety, legality, or accuracy."
+      },
+      "noPayments": {
+        "heading": "No payments or transactions on PirateHub",
+        "body": "PirateHub does not process payments, hold funds, arrange delivery, offer refunds, or resolve disputes. Any communication, payment, and exchange happens off this site, between the users involved, at their own risk."
+      },
+      "sellers": {
+        "heading": "Seller responsibilities",
+        "body": "By posting a listing, you confirm and agree that:",
+        "items": [
+          "You own the item or have the right to sell it.",
+          "The item is legal to sell and to own where the exchange takes place, and complies with campus policies.",
+          "Your listing, photos, videos, price, and condition are accurate and not misleading.",
+          "You are solely responsible for the sale, including any taxes, warranties, returns, or legal obligations.",
+          "You will not use the marketplace for scams, spam, or to collect other users' personal information."
+        ]
+      },
+      "prohibited": {
+        "heading": "Prohibited items",
+        "body": "The following may not be listed. Listings that appear to include them may be held for review or removed:",
+        "items": [
+          "Weapons, firearms, ammunition, explosives, and weapon accessories",
+          "Alcohol, tobacco, vapes, and nicotine products",
+          "Drugs, cannabis products, drug paraphernalia, and prescription or controlled medications",
+          "Stolen, counterfeit, or replica goods, and items that infringe someone else's rights",
+          "Exam answers, test banks, essay-writing, or anything that helps academic dishonesty",
+          "Fake IDs, official documents, or accounts and credentials",
+          "Animals",
+          "Adult or sexual content or services",
+          "Recalled, hazardous, or unsafe items",
+          "Anything else that is illegal or against campus policy"
+        ]
+      },
+      "buyers": {
+        "heading": "Buyer responsibilities",
+        "body": "Buyers are responsible for evaluating items and sellers before agreeing to a deal. Meet in a public place, inspect items before paying, and never pay in advance or share financial information. Any purchase is made at your own risk."
+      },
+      "moderation": {
+        "heading": "Moderation and reporting",
+        "body": "Listings go through the same moderation as the rest of PirateHub. Moderators may hold, edit, or remove any listing, and restrict any account, at their discretion and without notice. Moderation does not mean a listing has been verified or approved as safe. If you see a listing that breaks these rules or looks like a scam, use the Report button."
+      },
+      "liability": {
+        "heading": "No warranty and limitation of liability",
+        "body": "The marketplace is provided \"as is\" without warranties of any kind. To the fullest extent permitted by law, PirateHub and its operators are not liable for any loss, damage, injury, or dispute arising from listings, communications, or transactions between users. You agree to release PirateHub and its operators from any claims related to your dealings with other users, and to hold them harmless from claims that arise from your own listings or conduct."
+      },
+      "changes": {
+        "heading": "Changes to these terms",
+        "body": "These terms may be updated at any time. Sellers are asked to accept the current terms every time they post or edit a listing."
+      }
+    }
+  },
+  "legal": {
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "copyright": "Copyright Policy",
+    "marketplaceTerms": "Marketplace Terms",
+    "noContact": "(contact email not configured yet)"
+  },
+  "report": {
+    "button": "Report",
+    "title": {
+      "listing": "Report this listing",
+      "post": "Report this post",
+      "comment": "Report this comment"
+    },
+    "description": "Tell the moderators what's wrong, like harassment, a scam, a prohibited item, or something you hold the copyright to.",
+    "placeholder": "What's wrong?",
+    "submit": "Send report",
+    "thanks": "Thanks — a moderator will review it."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "updated": "Last updated: October 9, 2026",
+    "summary": "PirateHub is a free, independent community site for pirates. Be respectful, only post what you have the right to share, and remember that what other users post, organize, or sell is their responsibility — not PirateHub's.",
+    "sections": {
+      "about": {
+        "heading": "About PirateHub and these terms",
+        "body": "PirateHub is an unofficial community site made for fun by a current Whitworth University student. It is not affiliated with, endorsed by, or operated by Whitworth University, and nothing on it is official university information. By creating an account or using PirateHub you agree to these Terms, the Privacy Policy, the Copyright Policy, and — if you use the marketplace — the Marketplace Terms. If you don't agree, please don't use PirateHub."
+      },
+      "eligibility": {
+        "heading": "Accounts",
+        "body": "You must be at least 13 years old to use PirateHub. You agree to give accurate sign-up information, keep your password secure, and use only one account. You are responsible for everything that happens under your account."
+      },
+      "content": {
+        "heading": "Your content",
+        "body": "You keep ownership of what you post (posts, comments, events, listings, photos, videos, and files). By posting, you give PirateHub a non-exclusive, royalty-free license to host, store, display, and resize that content for the purpose of running the site. The license ends when you delete the content or your account, except for copies kept briefly in backups or where the law requires us to keep them. You confirm that you have the right to post everything you upload."
+      },
+      "rules": {
+        "heading": "Community rules",
+        "body": "When using PirateHub you agree not to post or do any of the following:",
+        "items": [
+          "Harassment, bullying, threats, hate speech, or content that targets someone",
+          "Sexual or pornographic content",
+          "Anything illegal, or anything that encourages illegal or dangerous activity",
+          "Spam, scams, phishing, or misleading content",
+          "Impersonating another person, club, or organization",
+          "Sharing someone else's personal information without their permission",
+          "Copyrighted material you don't have the right to share, including textbooks, publisher slides, and paid course materials",
+          "Exam answers, test banks, graded work meant for others, or anything that helps academic dishonesty",
+          "Malware, or attempts to break, overload, or get unauthorized access to PirateHub",
+          "Anything that violates campus policies"
+        ]
+      },
+      "moderation": {
+        "heading": "Moderation",
+        "body": "PirateHub uses automated tools (including a third-party moderation service) and volunteer moderators to screen content. We may review, hold, edit, or remove any content and suspend or delete any account at our discretion, with or without notice. We are not obligated to monitor everything, and moderation does not mean we have verified or endorse any content. If you see something that breaks these rules, please use the Report button."
+      },
+      "events": {
+        "heading": "Events, campus guide, and map",
+        "body": "Events are posted by users and organizers, not by PirateHub. We don't organize, host, supervise, or insure events, and you attend them at your own risk. Campus guide and map information is provided for convenience and may be outdated or wrong — check official sources for anything important."
+      },
+      "marketplace": {
+        "heading": "Marketplace",
+        "body": "The marketplace only displays listings. PirateHub is not a party to any sale and doesn't handle payments, delivery, or disputes. Using the marketplace means you also agree to the Marketplace Terms."
+      },
+      "thirdParty": {
+        "heading": "Links and third-party services",
+        "body": "PirateHub links to other websites and uses third-party services such as Google Maps. We don't control them and aren't responsible for their content, availability, or practices."
+      },
+      "copyright": {
+        "heading": "Copyright",
+        "body": "We respond to copyright complaints as described in the Copyright Policy, and we disable the accounts of repeat infringers."
+      },
+      "disclaimers": {
+        "heading": "No warranties",
+        "body": "PirateHub is provided \"as is\" and \"as available\", without warranties of any kind, express or implied. We don't promise that the site will always be available, secure, or error-free, or that any content on it is accurate. We may change or shut down any part of PirateHub at any time."
+      },
+      "liability": {
+        "heading": "Limitation of liability",
+        "body": "To the fullest extent permitted by law, PirateHub and its operators are not liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of data, money, or opportunity, arising from your use of PirateHub or from the content or conduct of any user — online or offline. Because PirateHub is free, our total liability for any claim is limited to $50."
+      },
+      "indemnity": {
+        "heading": "Your responsibility to us",
+        "body": "You agree to defend and hold harmless PirateHub and its operators from any claims, damages, or costs (including reasonable legal fees) arising from your content, your use of PirateHub, or your violation of these Terms or of anyone else's rights."
+      },
+      "termination": {
+        "heading": "Ending your use",
+        "body": "You can delete your account at any time from your profile page. We may suspend or delete accounts that break these Terms. The sections about content licenses that are still needed, warranties, liability, and your responsibility to us continue to apply afterwards."
+      },
+      "changes": {
+        "heading": "Changes to these terms",
+        "body": "We may update these Terms. When we make important changes we'll update the date above and, where reasonable, let you know on the site. Continuing to use PirateHub after a change means you accept the new Terms."
+      },
+      "contact": {
+        "heading": "Contact",
+        "body": "Questions about these Terms? Email {email}."
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: October 9, 2026",
+    "summary": "We collect only what PirateHub needs to work, we never sell your data or show ads, and you can delete your account and everything you posted at any time.",
+    "sections": {
+      "intro": {
+        "heading": "About this policy",
+        "body": "This policy explains what information PirateHub collects, how it is used, who it is shared with, and the choices you have. PirateHub is an unofficial site made by a Whitworth University student; it is not operated by Whitworth University, and the university does not receive your information from us."
+      },
+      "collect": {
+        "heading": "What we collect",
+        "body": "We collect:",
+        "items": [
+          "Account information: your name, email address, and password (stored only as a secure hash, never in plain text)",
+          "Your profile picture, if you upload one",
+          "What you post: posts, comments, votes, events, marketplace listings (including the contact info you choose to show), photos, videos, files, and reports",
+          "Technical information: your IP address and browser type, saved with each login session to keep your account secure",
+          "Anonymous usage statistics (page views) through Vercel Web Analytics, which does not use cookies or identify you",
+          "Your language preference"
+        ]
+      },
+      "use": {
+        "heading": "How we use it",
+        "body": "We use this information to run PirateHub: to create and secure your account, send verification and password-reset emails, show your content to other users, moderate content and keep the community safe, prevent spam and abuse, and fix problems. We do not sell your information, use it for advertising, or share it for cross-site tracking."
+      },
+      "sharing": {
+        "heading": "Who sees it and who we share it with",
+        "body": "Your name, profile picture, and anything you post are visible to other visitors. Marketplace contact info is shown only to signed-in users. Moderators and admins can see your email address in moderation tools. We use these service providers to run the site, and they process data only on our behalf:",
+        "items": [
+          "Vercel — hosting, file storage, and anonymous analytics",
+          "Neon — database hosting",
+          "Resend — sending account emails",
+          "OpenAI — the text of posts, comments, events, and listings is sent to OpenAI's moderation service to screen for harmful content",
+          "Google Maps — the map page loads Google's map service, which receives your IP address"
+        ]
+      },
+      "cookies": {
+        "heading": "Cookies",
+        "body": "PirateHub uses a session cookie to keep you logged in and a cookie to remember your language. Your light/dark theme choice is stored in your browser. We don't use advertising or tracking cookies."
+      },
+      "retention": {
+        "heading": "How long we keep it",
+        "body": "We keep your information while your account exists. When you delete your account, we delete your account details, posts, comments, votes, listings, and uploaded files. Events you organized stay up without your name. Copies may remain in backups for a short time, and expired login sessions are cleaned up automatically."
+      },
+      "rights": {
+        "heading": "Your choices and rights",
+        "body": "You can update your name and photo and delete your account at any time from your profile page. You can also email {email} to ask for a copy of your information or for help correcting or deleting it. Depending on where you live (for example, California), you may have additional privacy rights; we will honor them. We don't sell or share personal information as those laws define it."
+      },
+      "children": {
+        "heading": "Children",
+        "body": "PirateHub is not meant for anyone under 13, and we don't knowingly collect information from children under 13. If you believe a child has created an account, contact us and we will delete it."
+      },
+      "security": {
+        "heading": "Security",
+        "body": "We use HTTPS, hashed passwords, and access controls to protect your information, but no website can be perfectly secure. Use a unique password for PirateHub."
+      },
+      "changes": {
+        "heading": "Changes to this policy",
+        "body": "We may update this policy. When we make important changes we'll update the date above and, where reasonable, let you know on the site."
+      },
+      "contact": {
+        "heading": "Contact",
+        "body": "Privacy questions or requests? Email {email}."
+      }
+    }
+  },
+  "copyrightPolicy": {
+    "title": "Copyright Policy",
+    "updated": "Last updated: October 9, 2026",
+    "summary": "Only upload what you have the right to share. If you believe something on PirateHub infringes your copyright, send a notice to {email} and we will remove it.",
+    "sections": {
+      "intro": {
+        "heading": "Our approach",
+        "body": "PirateHub respects intellectual property rights and responds to notices of alleged copyright infringement under the U.S. Digital Millennium Copyright Act (DMCA)."
+      },
+      "courseMaterials": {
+        "heading": "Course materials and textbooks",
+        "body": "Don't upload textbooks, publisher slides, paid course materials, test banks, or other work you don't own or have permission to share. Your own notes and work are fine to share, as long as your course rules allow it."
+      },
+      "notice": {
+        "heading": "How to send a takedown notice",
+        "body": "If you believe content on PirateHub infringes your copyright, send a written notice that includes:",
+        "items": [
+          "Your physical or electronic signature",
+          "A description of the copyrighted work you believe is infringed",
+          "The link (URL) to the content on PirateHub you want removed",
+          "Your name, address, phone number, and email address",
+          "A statement that you have a good-faith belief that the use is not authorized by the copyright owner, its agent, or the law",
+          "A statement that the information in your notice is accurate and, under penalty of perjury, that you are the copyright owner or authorized to act on their behalf"
+        ]
+      },
+      "agent": {
+        "heading": "Where to send it",
+        "body": "Send notices to PirateHub's designated copyright agent at {email}. We will remove or disable access to the content and, where possible, notify the user who posted it."
+      },
+      "counter": {
+        "heading": "Counter-notices",
+        "body": "If your content was removed and you believe it was a mistake or misidentification, you can send a counter-notice to {email} with your signature, the removed content and where it appeared, a statement under penalty of perjury that you believe it was removed by mistake, and your name, address, and phone number with consent to the jurisdiction of the federal court for your address. We may restore the content 10–14 business days later unless the complainant tells us they have filed a lawsuit."
+      },
+      "repeat": {
+        "heading": "Repeat infringers",
+        "body": "We disable the accounts of users who repeatedly infringe copyright."
+      },
+      "misrepresentation": {
+        "heading": "False claims",
+        "body": "Knowingly misrepresenting that content infringes, or that it was removed by mistake, can make you liable for damages under the DMCA."
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadFile } from "@/lib/uploadClient";
 import { useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -62,11 +63,7 @@ export default function PostForm({ initialPost }) {
 
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.set("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+      const data = await uploadFile(file);
       setAttachments((prev) => [...prev, data]);
     } catch (error) {
       console.error("Attachment upload error:", error);
@@ -84,7 +81,8 @@ export default function PostForm({ initialPost }) {
       const fd = new FormData();
       fd.set("id", String(initialPost.id));
       await deletePostAction(fd);
-      window.location.href = `/${locale}/social`;
+      router.push(`/${locale}/social`);
+      router.refresh();
     } catch (error) {
       console.error("Post deletion error:", error);
       alert(`${t("errors.deleting")} ${error.message}`);

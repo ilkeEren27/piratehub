@@ -6,8 +6,9 @@
 
 import { revalidatePath } from "next/cache";
 
-import { checkRole, getSessionUser } from "@/utils/roles";
+import { getSessionUser } from "@/utils/roles";
 import { prisma } from "@/lib/db";
+import { collectUserUploads, deleteUploads } from "@/lib/blobCleanup";
 
 // Normalize an arbitrary role value into a known enum value
 const toRole = (val) => {
@@ -25,7 +26,8 @@ const toRole = (val) => {
 
 // Action: set a user's role (Admin-only)
 export async function setRole(formData) {
-  if (!(await checkRole("Admin"))) {
+  const sessionUser = await getSessionUser();
+  if (sessionUser?.role !== "Admin") {
     return { message: "Not Authorized" };
   }
 
@@ -33,11 +35,17 @@ export async function setRole(formData) {
     const userId = formData.get("id");
     const role = toRole(formData.get("role"));
 
+    // Demoting yourself could leave the site with no admin at all.
+    if (userId === sessionUser.id && role !== "Admin") {
+      return { message: "You cannot remove your own Admin role." };
+    }
+
     const result = await prisma.user.update({
       where: { id: userId },
       data: { role },
     });
 
+    revalidatePath("/[locale]/admin", "page");
     return { message: `Role set to ${result.role}.` };
   } catch (err) {
     console.error("Error setting role:", err);
@@ -47,18 +55,23 @@ export async function setRole(formData) {
 
 // Action: reset a user's role back to "User" (Admin-only)
 export async function removeRole(formData) {
-  if (!(await checkRole("Admin"))) {
+  const sessionUser = await getSessionUser();
+  if (sessionUser?.role !== "Admin") {
     return { message: "Not Authorized" };
   }
 
   try {
     const userId = formData.get("id");
+    if (userId === sessionUser.id) {
+      return { message: "You cannot remove your own Admin role." };
+    }
 
     await prisma.user.update({
       where: { id: userId },
       data: { role: "User" },
     });
 
+    revalidatePath("/[locale]/admin", "page");
     return { message: "Role reset to User." };
   } catch (err) {
     console.error("Error resetting role:", err);
@@ -67,8 +80,9 @@ export async function removeRole(formData) {
 }
 
 // Action: permanently delete a user (Admin-only)
-// Prisma cascades remove the user's sessions, accounts, posts, comments and
-// votes; events they organized are kept with a null organizer.
+// Prisma cascades remove the user's sessions, accounts, posts, comments,
+// votes and marketplace listings, and their uploaded files are deleted;
+// events they organized are kept with a null organizer.
 export async function deleteUser(formData) {
   const sessionUser = await getSessionUser();
   if (sessionUser?.role !== "Admin") {
@@ -83,7 +97,10 @@ export async function deleteUser(formData) {
       return { message: "You cannot delete your own account." };
     }
 
+    // Their uploaded files are public URLs, so they go too.
+    const uploads = await collectUserUploads(userId);
     const deleted = await prisma.user.delete({ where: { id: userId } });
+    await deleteUploads(uploads);
 
     revalidatePath("/[locale]/admin", "page");
 

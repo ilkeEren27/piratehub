@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getSessionUser } from "@/utils/roles";
+import { consumeUploadQuota } from "@/lib/uploadQuota";
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 10);
 
@@ -18,18 +19,13 @@ const DOCUMENT_TYPES = new Set([
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ]);
 
-const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
-const UPLOAD_WINDOW_MS = 60 * 1000;
-const MAX_UPLOADS_PER_WINDOW = 10;
-
-const FOLDERS = new Set(["social", "avatars", "events"]);
+// Vercel rejects function request bodies over 4.5 MB, so anything bigger
+// would fail in production before reaching this code.
+const MAX_SIZE_BYTES = 4 * 1024 * 1024; // 4 MB
+// Marketplace videos are too large for this route and go through
+// /api/upload/video (direct client upload) instead.
+const FOLDERS = new Set(["social", "avatars", "events", "marketplace"]);
 const EVENT_CREATOR_ROLES = new Set(["ClubLeader", "ASWU", "Faculty", "Admin"]);
-
-const globalForUploadRateLimit = globalThis;
-const uploadAttempts = globalForUploadRateLimit.uploadAttempts || new Map();
-if (!globalForUploadRateLimit.uploadAttempts) {
-  globalForUploadRateLimit.uploadAttempts = uploadAttempts;
-}
 
 function startsWith(bytes, signature, offset = 0) {
   return signature.every((value, index) => bytes[offset + index] === value);
@@ -70,31 +66,6 @@ async function detectMimeType(file) {
   return null;
 }
 
-function consumeUploadQuota(userId) {
-  const now = Date.now();
-  const earliestAllowed = now - UPLOAD_WINDOW_MS;
-  const attempts = (uploadAttempts.get(userId) || []).filter(
-    (attempt) => attempt > earliestAllowed
-  );
-
-  if (attempts.length >= MAX_UPLOADS_PER_WINDOW) return false;
-
-  attempts.push(now);
-  uploadAttempts.set(userId, attempts);
-
-  if (uploadAttempts.size > 1000) {
-    for (const [id, timestamps] of uploadAttempts) {
-      const activeAttempts = timestamps.filter(
-        (attempt) => attempt > earliestAllowed
-      );
-      if (activeAttempts.length) uploadAttempts.set(id, activeAttempts);
-      else uploadAttempts.delete(id);
-    }
-  }
-
-  return true;
-}
-
 export async function POST(request) {
   const user = await getSessionUser();
   if (!user) {
@@ -123,7 +94,7 @@ export async function POST(request) {
   }
   if (file.size > MAX_SIZE_BYTES) {
     return NextResponse.json(
-      { error: "File is larger than 10 MB" },
+      { error: "File is larger than 4 MB" },
       { status: 413 }
     );
   }

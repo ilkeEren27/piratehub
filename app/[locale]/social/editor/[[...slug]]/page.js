@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getSessionUser } from "@/utils/roles";
 import { setRequestLocale } from "next-intl/server";
 import PostForm from "@/components/social/PostForm";
+import { sanitizeDoc } from "@/lib/tiptap";
 
 export default async function PostEditorPage({ params }) {
   const { locale, slug } = await params;
@@ -27,7 +28,8 @@ export default async function PostEditorPage({ params }) {
       id: post.id,
       title: post.title,
       flair: post.flair,
-      contentJson: post.contentJson,
+      // Stored content may predate the current sanitizer.
+      contentJson: sanitizeDoc(structuredClone(post.contentJson)),
       attachments: post.attachments.map((a) => ({
         url: a.url,
         fileName: a.fileName,

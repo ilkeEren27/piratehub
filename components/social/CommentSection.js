@@ -9,6 +9,7 @@ import {
 } from "@/app/social/_actions";
 import VoteButtons from "@/components/social/VoteButtons";
 import UserAvatar from "@/components/UserAvatar";
+import ReportButton from "@/components/ReportButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Reply, Trash2, Loader2 } from "lucide-react";
@@ -29,7 +30,8 @@ function CommentForm({ postId, parentId = null, onDone, autoFocus = false }) {
       fd.set("postId", String(postId));
       if (parentId) fd.set("parentId", String(parentId));
       fd.set("content", content);
-      await createCommentAction(fd);
+      const { moderationStatus } = await createCommentAction(fd);
+      if (moderationStatus === "Pending") alert(t("commentPendingNotice"));
       setContent("");
       onDone?.();
       router.refresh();
@@ -72,6 +74,52 @@ function CommentForm({ postId, parentId = null, onDone, autoFocus = false }) {
 }
 
 function CommentItem({ comment, postId, currentUser, depth }) {
+  if (comment.placeholder) {
+    return (
+      <HiddenComment
+        comment={comment}
+        postId={postId}
+        currentUser={currentUser}
+        depth={depth}
+      />
+    );
+  }
+  return (
+    <VisibleComment
+      comment={comment}
+      postId={postId}
+      currentUser={currentUser}
+      depth={depth}
+    />
+  );
+}
+
+// Stands in for a comment the viewer can't see but that has visible replies.
+function HiddenComment({ comment, postId, currentUser, depth }) {
+  const t = useTranslations("social");
+  return (
+    <div
+      className={cn(
+        depth > 0 && "ml-4 sm:ml-6 pl-3 sm:pl-4 border-l-2 border-border/60"
+      )}
+    >
+      <p className="py-3 text-sm italic text-muted-foreground">
+        {t("hiddenComment")}
+      </p>
+      {comment.children.map((child) => (
+        <CommentItem
+          key={child.id}
+          comment={child}
+          postId={postId}
+          currentUser={currentUser}
+          depth={depth + 1}
+        />
+      ))}
+    </div>
+  );
+}
+
+function VisibleComment({ comment, postId, currentUser, depth }) {
   const t = useTranslations("social");
   const router = useRouter();
   const [replying, setReplying] = useState(false);
@@ -118,6 +166,17 @@ function CommentItem({ comment, postId, currentUser, depth }) {
           <span>{comment.timeAgo}</span>
         </div>
 
+        {comment.moderationStatus !== "Approved" && (
+          <Badge
+            variant="outline"
+            className="border-amber-500/40 text-amber-600 dark:text-amber-400"
+          >
+            {comment.moderationStatus === "Rejected"
+              ? t("commentRemovedBadge")
+              : t("pendingBadge")}
+          </Badge>
+        )}
+
         <p className="text-sm sm:text-base whitespace-pre-line leading-relaxed">
           {comment.content}
         </p>
@@ -142,6 +201,11 @@ function CommentItem({ comment, postId, currentUser, depth }) {
               {t("reply")}
             </Button>
           )}
+          {currentUser.isSignedIn &&
+            currentUser.id !== comment.authorId &&
+            comment.moderationStatus === "Approved" && (
+              <ReportButton kind="comment" id={comment.id} compact />
+            )}
           {canDelete && (
             <Button
               variant="ghost"

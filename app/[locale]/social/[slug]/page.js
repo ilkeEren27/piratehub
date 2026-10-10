@@ -10,6 +10,7 @@ import FlairBadge from "@/components/social/FlairBadge";
 import VoteButtons from "@/components/social/VoteButtons";
 import CommentSection from "@/components/social/CommentSection";
 import UserAvatar from "@/components/UserAvatar";
+import ReportButton from "@/components/ReportButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock3, FileText, Pencil, Download } from "lucide-react";
@@ -57,6 +58,13 @@ export default async function PostPage({ params }) {
 
   const html = renderPostHtml(post.contentJson);
 
+  // Approved comments are public; pending ones are visible to their author
+  // and moderators; rejected ones only to moderators.
+  const canSeeComment = (c) =>
+    c.moderationStatus === "Approved" ||
+    isModerator ||
+    (c.moderationStatus === "Pending" && user && c.authorId === user.id);
+
   // Build the nested comment tree; top level sorted by score, replies stay
   // chronological.
   const byId = new Map(
@@ -64,6 +72,8 @@ export default async function PostPage({ params }) {
       c.id,
       {
         id: c.id,
+        visible: canSeeComment(c),
+        moderationStatus: c.moderationStatus,
         content: c.content,
         parentId: c.parentId,
         authorId: c.author?.id ?? null,
@@ -88,6 +98,17 @@ export default async function PostPage({ params }) {
     }
   }
   tree.sort((a, b) => b.score - a.score);
+
+  // Hidden comments disappear; if they have visible replies, a placeholder
+  // keeps the thread readable without showing the hidden text or author.
+  const prune = (comment) => {
+    const children = comment.children.map(prune).filter(Boolean);
+    if (comment.visible) return { ...comment, children };
+    if (!children.length) return null;
+    return { id: comment.id, placeholder: true, children };
+  };
+  const visibleTree = tree.map(prune).filter(Boolean);
+  const visibleCount = post.comments.filter(canSeeComment).length;
 
   const score = post.votes.reduce((sum, v) => sum + v.value, 0);
   const myVote = user
@@ -116,6 +137,9 @@ export default async function PostPage({ params }) {
               {t("backToBoard")}
             </Button>
           </Link>
+          {isSignedIn && !isOwner && post.moderationStatus === "Approved" && (
+            <ReportButton kind="post" id={post.id} />
+          )}
           {canEdit && (
             <Link href={`/${locale}/social/editor/${post.slug}`}>
               <Button variant="outline" size="sm">
@@ -226,7 +250,7 @@ export default async function PostPage({ params }) {
         <div className="mt-8">
           <CommentSection
             postId={post.id}
-            comments={{ tree, total: post.comments.length }}
+            comments={{ tree: visibleTree, total: visibleCount }}
             currentUser={{
               id: user?.id ?? null,
               name: user?.name ?? null,

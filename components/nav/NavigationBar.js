@@ -27,6 +27,8 @@ import {
   UserPlus,
   LogOut,
   Compass,
+  Store,
+  Gavel,
 } from "lucide-react";
 import { authClient, useSession } from "@/lib/auth-client";
 import UserAvatar from "@/components/UserAvatar";
@@ -41,6 +43,8 @@ export default function NavigationBar() {
   const user = session?.user;
   const role = user?.role;
   const isAdmin = role === "Admin";
+  // Admins reach the moderation queue through the admin panel.
+  const isModeratorOnly = role === "Moderator";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -99,6 +103,12 @@ export default function NavigationBar() {
               {t("social")}
             </Button>
           </Link>
+          <Link href={`/${locale}/marketplace`}>
+            <Button className="h-9 px-4" variant="ghost">
+              <Store className="h-4 w-4 text-primary" />
+              {t("marketplace")}
+            </Button>
+          </Link>
         </div>
         {/* Right: Auth Buttons */}
         <div className="flex gap-3 flex-1 min-w-0 justify-end">
@@ -118,6 +128,11 @@ export default function NavigationBar() {
               {isAdmin && (
                 <Link href={`/${locale}/admin`}>
                   <Button>{t("adminPanel")}</Button>
+                </Link>
+              )}
+              {isModeratorOnly && (
+                <Link href={`/${locale}/admin/moderation`}>
+                  <Button>{t("moderation")}</Button>
                 </Link>
               )}
               <DropdownMenu>
@@ -262,6 +277,20 @@ export default function NavigationBar() {
                     <span className="font-medium">{t("social")}</span>
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  asChild
+                  className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10"
+                >
+                  <Link
+                    href={`/${locale}/marketplace`}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="p-1.5 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                      <Store className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="font-medium">{t("marketplace")}</span>
+                  </Link>
+                </DropdownMenuItem>
               </div>
 
               <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-primary/20 to-transparent h-px" />
@@ -331,6 +360,22 @@ export default function NavigationBar() {
                         <span className="font-medium">{t("profile")}</span>
                       </Link>
                     </DropdownMenuItem>
+                    {isModeratorOnly && (
+                      <DropdownMenuItem
+                        asChild
+                        className="group cursor-pointer rounded-lg px-3 py-2.5 transition-all duration-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10"
+                      >
+                        <Link
+                          href={`/${locale}/admin/moderation`}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="p-1.5 rounded-md bg-accent/10 group-hover:bg-accent/20 transition-colors">
+                            <Gavel className="h-4 w-4 text-accent" />
+                          </div>
+                          <span className="font-medium">{t("moderation")}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     {isAdmin && (
                       <DropdownMenuItem
                         asChild

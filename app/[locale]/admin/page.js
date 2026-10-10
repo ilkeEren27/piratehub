@@ -12,29 +12,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
+import UserAvatar from "@/components/UserAvatar";
 import { Gavel } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const ROLE_VALUES = ["User", "ClubLeader", "ASWU", "Moderator", "Faculty", "Admin"];
 
-function Avatar({ user, alt }) {
-  if (user.image) {
-    return (
-      <Image
-        src={user.image}
-        alt={alt}
-        width={75}
-        height={75}
-        className="rounded-md object-cover"
-      />
-    );
-  }
-  const initial = (user.name || user.email || "?").trim().charAt(0).toUpperCase();
+// Same avatar as everywhere else on the site (a plain <img>), so an odd
+// image URL can never crash the admin panel.
+function Avatar({ user }) {
   return (
-    <div className="w-[75px] h-[75px] shrink-0 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground text-3xl font-semibold">
-      {initial}
-    </div>
+    <UserAvatar
+      name={user.name || user.email}
+      image={user.image}
+      size="lg"
+      className="rounded-md"
+    />
   );
 }
 
@@ -99,7 +92,7 @@ export default async function AdminDashboard({ searchParams, params }) {
             <div className="hidden md:flex items-start justify-between border-b py-4 gap-6">
               {/* LEFT: avatar + details */}
               <div className="flex my-4 mx-4 gap-4 min-w-0">
-                <Avatar user={user} alt={t("profilePicture")} />
+                <Avatar user={user} />
                 <div className="min-w-0 align-center">
                   <h1>
                     <span className="font-medium truncate">{t("name")}: </span>
@@ -151,7 +144,7 @@ export default async function AdminDashboard({ searchParams, params }) {
             {/* Mobile*/}
             <div className="md:hidden">
               <div className="flex my-4 mx-4 gap-4 min-w-0">
-                <Avatar user={user} alt={t("profilePicture")} />
+                <Avatar user={user} />
                 <div className="min-w-0 align-center">
                   <h1>
                     <span className="font-medium truncate">{t("name")}: </span>

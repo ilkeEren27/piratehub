@@ -1,7 +1,9 @@
 "use client";
 
+import { uploadFile } from "@/lib/uploadClient";
 import { useMemo, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import NextImage from "next/image";
 import { places } from "@/data/places";
 import { upsertEventAction, deleteEventAction } from "@/app/events/_actions";
@@ -72,6 +74,8 @@ function addOneHour(timeStr) {
 
 export default function EventForm({ initialEvent }) {
   const t = useTranslations("eventForm");
+  const locale = useLocale();
+  const router = useRouter();
 
   const [detailsJson, setDetailsJson] = useState(
     initialEvent?.detailsJson ?? { type: "doc", content: [] }
@@ -172,13 +176,7 @@ export default function EventForm({ initialEvent }) {
     setImageError("");
     setImageBusy(true);
     try {
-      const fd = new FormData();
-      fd.set("file", file);
-      fd.set("kind", "image");
-      fd.set("folder", "events");
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+      const data = await uploadFile(file, { kind: "image", folder: "events" });
       setImageUrl(data.url);
     } catch (error) {
       console.error("Event image upload error:", error);
@@ -198,7 +196,8 @@ export default function EventForm({ initialEvent }) {
       const fd = new FormData();
       fd.set("id", String(initialEvent.id));
       await deleteEventAction(fd);
-      window.location.href = "/events";
+      router.push(`/${locale}/events`);
+      router.refresh();
     } catch (error) {
       console.error("Event deletion error:", error);
       alert(`${t("errors.deleting")} ${error.message}`);
@@ -232,11 +231,16 @@ export default function EventForm({ initialEvent }) {
     }
     try {
       const fd = new FormData(e.currentTarget);
+      // Send real moments in time (UTC ISO strings). The server can't
+      // interpret "18:00" correctly without knowing this browser's time zone.
+      fd.set("startsAt", start.toISOString());
+      fd.set("endsAt", end.toISOString());
       fd.set("detailsJson", JSON.stringify(detailsJson));
       if (initialEvent?.id) fd.set("id", String(initialEvent.id));
-      await upsertEventAction(fd); // creates or updates
-      // Redirect or show success message
-      window.location.href = "/events";
+      const { moderationStatus } = await upsertEventAction(fd); // creates or updates
+      if (moderationStatus === "Pending") alert(t("pendingNotice"));
+      router.push(`/${locale}/events`);
+      router.refresh();
     } catch (error) {
       console.error("Event creation error:", error);
       alert(`${t("errors.creating")} ${error.message}`);

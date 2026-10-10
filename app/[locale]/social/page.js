@@ -46,7 +46,12 @@ export default async function SocialPage({ params, searchParams }) {
       include: {
         author: { select: { name: true, role: true, image: true } },
         votes: { select: { value: true, userId: true } },
-        _count: { select: { comments: true, attachments: true } },
+        _count: {
+          select: {
+            comments: { where: { moderationStatus: "Approved" } },
+            attachments: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       take: 100,

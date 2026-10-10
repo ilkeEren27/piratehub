@@ -1,11 +1,13 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 export const SearchUsers = () => {
+  const t = useTranslations("admin");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -22,11 +24,11 @@ export const SearchUsers = () => {
         }}
       >
         <Label htmlFor="search" className="font-bold text-2xl justify-center">
-          Search for users
+          {t("searchUsers")}
         </Label>
         <div className="flex my-4 gap-2">
           <Input id="search" name="search" type="text" className="w-60" />
-          <Button type="submit">Search</Button>
+          <Button type="submit">{t("search")}</Button>
         </div>
       </form>
     </div>
